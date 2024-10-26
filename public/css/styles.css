@@ -1,0 +1,27 @@
+/* public/css/styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.package-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.package-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    width: 200px;
+    text-align: center;
+}
+
+.package-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
