@@ -76,6 +76,15 @@ Route::get('/create-itinerary/{package_id}', [ItinerariesController::class, 'cre
 
 Route::resource('itineraries', ItinerariesController::class);
 
+Route::get('/itineraries/{id}/edit', [ItinerariesController::class, 'edit'])->name('itineraries.edit');
+Route::put('/itineraries/{id}', [ItinerariesController::class, 'update'])->name('itineraries.update');
+Route::delete('/itineraries/package/{id}', [ItinerariesController::class, 'destroyByPackage'])->name('itineraries.destroyByPackage');
+
+
+
+
+
+
 //Gallaries
 Route::get('/galleries/create/{package}', [GalleryController::class, 'create'])->name('galleries.create');
 Route::post('/galleries/store', [GalleryController::class, 'store'])->name('galleries.store');

@@ -68,5 +68,21 @@ class ItinerariesController extends Controller
     return redirect()->route('itineraries.index')->with('success', 'Itineraries created successfully!');
 }
 
+
+
+public function destroyByPackage($id)
+{
+    // Delete all itineraries where the package_id matches the provided package ID
+    $deletedRows = Itineraries::where('pk_Package_id', $id)->delete();
+
+    if ($deletedRows) {
+        return redirect()->back()->with('success', 'All itineraries deleted successfully.');
+    }
+
+    return redirect()->back()->with('error', 'No itineraries found for this package.');
+}
+
+
+
     
 }

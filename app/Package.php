@@ -36,5 +36,11 @@ class Package extends Model
     {
         return $this->hasMany(Inclusion::class, 'pk_Package_id');
     }
+    // Package.php
+public function itineraries()
+{
+    return $this->hasMany(Itineraries::class, 'package_id', 'pk_Package_id');
+}
+
     public $timestamps = true;
 }

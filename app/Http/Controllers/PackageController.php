@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Itineraries;
 use App\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -9,10 +10,17 @@ class PackageController extends Controller
 {
     // Display a list of packages
     public function index()
-    {
-        $packages = Package::all();
-        return view('packages.index')->with('packages', $packages);
+{
+    $packages = Package::all();
+
+    foreach ($packages as $package) {
+        // Check if there are itineraries for each package based on pk_Package_id
+        $package->hasItineraries = Itineraries::where('pk_Package_id', $package->pk_Package_id)->exists();
     }
+
+    return view('packages.index', compact('packages'));
+}
+    
 
 
     // Show the form for creating a new package
@@ -127,3 +135,4 @@ class PackageController extends Controller
 
 
 }
+
