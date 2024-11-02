@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ItinerariesController extends Controller
 {
-    //index
     public function index()
 {
     // Fetch all itineraries along with related package information
@@ -17,60 +16,73 @@ class ItinerariesController extends Controller
     // Return the view with itineraries data
     return view('itineraries.index', compact('itineraries'));
 }
-
-    // Show the form to create itineraries for a package
-    public function create($package_id)
+    public function create($id)
     {
-        // Find the package by its ID
-        $package = Package::findOrFail($package_id);
-
-        // Get the duration (number of days)
+        // Retrieve the current package and its duration
+        $package = Package::findOrFail($id);
         $duration = $package->duration;
 
-        // Pass the package and duration to the view
-        return view('itineraries.create', compact('package', 'duration'));
-    }
+        // Find packages with the same duration that have existing itineraries
+        $matchingPackages = Package::where('duration', $duration)
+            ->whereHas('itineraries')
+            ->where('pk_Package_id', '!=', $id) // Exclude the current package
+            ->get();
 
-    // Store the submitted itineraries
+        return view('itineraries.create', compact('package', 'duration', 'matchingPackages'));
+    }
     public function store(Request $request)
 {
-    // Validate incoming data
-    $request->validate([
-        'package_id' => 'required|exists:packages,pk_Package_id',
-        'itineraries.*.days' => 'required|integer',
-        'itineraries.*.title' => 'required|string|max:255',
-        'itineraries.*.description' => 'required|string',
-        'itineraries.*.image' => 'nullable|image|max:2048', // Validate images
-    ]);
+    // Check if the user has selected a package to copy itineraries from
+    if ($request->has('copy_from_package_id') && $request->copy_from_package_id) {
+        $copyFromPackageId = $request->copy_from_package_id;
 
-    // Loop through the itineraries array and store each one
-    foreach ($request->itineraries as $itineraryData) {
+        // Fetch itineraries from the selected package
+        $itinerariesToCopy = Itineraries::where('pk_Package_id', $copyFromPackageId)->get();
+
+        // Loop through the itineraries to copy
+        foreach ($itinerariesToCopy as $itineraryData) {
+            $itinerary = new Itineraries();
+
+            // Set the new package ID
+            $itinerary->pk_Package_id = $request->pk_Package_id; // New package ID
+
+            // Copy existing data
+            $itinerary->days = $itineraryData->days;
+            $itinerary->title = $itineraryData->title;
+            $itinerary->description = $itineraryData->description;
+
+            // Copy the image URL
+            $itinerary->image = $itineraryData->image; // Store the image URL directly
+
+            $itinerary->save();
+        }
+
+        return redirect()->route('itineraries.index', $request->pk_Package_id)->with('success', 'Itineraries copied successfully.');
+    }
+
+    // If no package is selected, handle user input as usual
+    foreach ($request->itineraries as $day => $itineraryData) {
         $itinerary = new Itineraries();
-        $itinerary->pk_Package_id = $request->package_id;
+        $itinerary->pk_Package_id = $request->pk_Package_id; // Set the package ID
         $itinerary->days = $itineraryData['days'];
         $itinerary->title = $itineraryData['title'];
         $itinerary->description = $itineraryData['description'];
 
-        // Handle file upload for the image
+        // Handle image upload if provided
         if (isset($itineraryData['image'])) {
-            $file = $itineraryData['image'];
-            $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', $itineraryData['title']);
-            $fileName = $sanitizedTitle . '.' . $file->getClientOriginalExtension();
-
-            // Store the image on S3 and get the URL
-            $path = Storage::disk('s3')->putFileAs('itineraries', $file, $fileName);
-            $itinerary->image = Storage::disk('s3')->url($path);
+            $itinerary->image = $itineraryData['image']->store('images', 'public'); // Save the image and store the path
         }
 
-        $itinerary->save(); // Save the itinerary to the database
+        $itinerary->save();
     }
 
-    return redirect()->route('itineraries.index')->with('success', 'Itineraries created successfully!');
+    return redirect()->route('itineraries.index', $request->pk_Package_id)->with('success', 'Itineraries created successfully.');
 }
 
 
 
-public function destroyByPackage($id)
+
+    public function destroyByPackage($id)
 {
     // Delete all itineraries where the package_id matches the provided package ID
     $deletedRows = Itineraries::where('pk_Package_id', $id)->delete();
@@ -84,5 +96,25 @@ public function destroyByPackage($id)
 
 
 
+    public function fetchItineraries($id)
+    {
+        // Fetch itineraries for the selected package
+        $itineraries = Itineraries::where('pk_Package_id', $id)->get();
+
+        return response()->json(['itineraries' => $itineraries]);
+    }
+    
+    public function destroy($id)
+    {
+        // Delete all itineraries for a specific package
+        $itineraries = Itineraries::where('pk_Package_id', $id);
+
+        if ($itineraries->exists()) {
+            $itineraries->delete();
+            return redirect()->back()->with('success', 'All itineraries deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'No itineraries found for this package.');
+    }
     
 }

@@ -80,6 +80,12 @@ Route::get('/itineraries/{id}/edit', [ItinerariesController::class, 'edit'])->na
 Route::put('/itineraries/{id}', [ItinerariesController::class, 'update'])->name('itineraries.update');
 Route::delete('/itineraries/package/{id}', [ItinerariesController::class, 'destroyByPackage'])->name('itineraries.destroyByPackage');
 
+// Route::get('/packages/{packageId}/itineraries', [ItinerariesController::class, 'fetchItineraries'])->name('fetch.itineraries');
+Route::get('/packages/{id}/itineraries', [ItinerariesController::class, 'fetchItineraries']);
+Route::post('/itineraries/store', [ItinerariesController::class, 'store'])->name('save.itinerary');
+
+
+
 
 
 
