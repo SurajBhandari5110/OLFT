@@ -28,6 +28,7 @@ class TourGuideController extends Controller
     public function store(Request $request)
     {
         $file = $request->file('image');
+        $requestData = $request->all();
         $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', $request->input('captain'));
         $fileName = $sanitizedTitle . '.' . $file->getClientOriginalExtension();
         

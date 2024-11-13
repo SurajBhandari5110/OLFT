@@ -49,4 +49,6 @@ class GalleryController extends Controller
     return redirect()->route('galleries.index')->with('success', 'Images uploaded successfully!');
 }
 
+
+
 }

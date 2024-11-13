@@ -116,15 +116,15 @@
         const imagePreview = document.getElementById('image-preview');
         const cropConfirmButton = document.getElementById('crop-confirm-button');
 
-        // Function to reset cropper and image preview
+        // Reset cropper function
         function resetCropper() {
             if (cropper) {
-                cropper.destroy();  // Destroy the previous cropper instance
-                cropper = null;  // Set cropper to null
+                cropper.destroy();
+                cropper = null;
             }
-            imagePreview.style.display = 'none';  // Hide the image preview
-            cropConfirmButton.style.display = 'none';  // Hide crop confirm button
-            imagePreview.src = '';  // Reset image source
+            imagePreview.style.display = 'none';
+            cropConfirmButton.style.display = 'none';
+            imagePreview.src = '';
         }
 
         // Initialize cropper on selecting a file
@@ -133,21 +133,19 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    resetCropper();  // Reset the previous cropper instance
+                    resetCropper();
 
-                    // Display the new image
                     imagePreview.src = event.target.result;
-                    imagePreview.style.display = 'block';  // Show image preview
-                    cropConfirmButton.style.display = 'inline-block';  // Show crop confirm button
+                    imagePreview.style.display = 'block';
+                    cropConfirmButton.style.display = 'inline-block';
 
-                    // Initialize the new cropper instance
                     cropper = new Cropper(imagePreview, {
-                        aspectRatio: 1,  // Optional: lock to a square aspect ratio
+                        aspectRatio: 1,
                         viewMode: 2,
                         autoCropArea: 1,
                     });
                 };
-                reader.readAsDataURL(file);  // Read the selected file and convert to DataURL
+                reader.readAsDataURL(file);
             }
         });
 
@@ -155,22 +153,23 @@
             if (cropper) {
                 const canvas = cropper.getCroppedCanvas();
                 canvas.toBlob((blob) => {
-                    const croppedFile = new File([blob], 'cropped_image.jpg', { type: 'image/jpeg' });
+                    const croppedFile = new File([blob], value="{{$package->pk_Package_id}}", { type: 'image/jpeg' });
 
                     // Update the input field with the cropped file
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(croppedFile);
                     imageInput.files = dataTransfer.files;
 
-                    // Hide the image preview and crop button after cropping
+                    // Hide preview and button after crop
                     imagePreview.style.display = 'none';
                     cropConfirmButton.style.display = 'none';
-                }, 'image/jpeg');
+                }, 'image/jpeg/png');
             }
         });
 
-        // Reset the cropper when the form is reset
+        // Reset cropper on form reset
         document.querySelector('form').addEventListener('reset', resetCropper);
     </script>
+
 </body>
 </html>

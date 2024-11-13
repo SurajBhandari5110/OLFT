@@ -92,7 +92,7 @@
         cropConfirmButton.addEventListener('click', () => {
             const canvas = cropper.getCroppedCanvas();
             canvas.toBlob((blob) => {
-                const croppedFile = new File([blob], 'cropped_image.jpg', { type: 'image/jpeg' });
+                const croppedFile = new File([blob], value={{$tourguide->id}}, { type: 'image/jpeg' });
 
                 // Prepare the cropped image for upload
                 const dataTransfer = new DataTransfer();

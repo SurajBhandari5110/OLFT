@@ -132,6 +132,30 @@ class PackageController extends Controller
             return redirect()->route('packages.index')->with('error', 'Package not found');
         }
     }
+    public function uploadGalleryImage(Request $request)
+{
+    $request->validate([
+        'package_id' => 'required|exists:packages,pk_Package_id',
+        'gallery_image' => 'required|image|max:2048', // Adjust max size as needed
+    ]);
+
+    $package = Package::find($request->package_id);
+
+    if ($package) {
+        // Store the image in S3
+        $file = $request->file('gallery_image');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $path = Storage::disk('s3')->putFileAs('packages/gallery', $file, $fileName);
+        $imageUrl = Storage::disk('s3')->url($path);
+
+        // Save image to the gallery associated with the package
+        $package->galleries()->create(['image_url' => $imageUrl]);
+
+        return back()->with('success', 'Image uploaded successfully!');
+    }
+
+    return back()->with('error', 'Failed to upload image.');
+}
 
 
 

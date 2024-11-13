@@ -20,7 +20,7 @@
                 <input type="hidden" name="pk_Package_id" value="{{ $package->pk_Package_id }}">
 
                 <div class="form-group">
-                    <label for="images">Select Images:</label>
+                    <label for="images">Select Image:</label>
                     <input type="file" name="images[]" class="form-control" multiple required>
                 </div>
 

@@ -92,3 +92,4 @@ Route::middleware(['admin'])->group(function () {
     });
     
 });
+Route::post('/packages/upload-gallery-image', [PackageController::class, 'uploadGalleryImage'])->name('packages.uploadGalleryImage');
