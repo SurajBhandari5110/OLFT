@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <h1 class="mt-4">Itineraries</h1>
-    <a href="{{ route('itineraries.create') }}" class="btn btn-success mb-3">Create New Itinerary</a>
+   
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

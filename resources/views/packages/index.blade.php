@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Packages</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .package-image {
+            max-height: 150px;
+            max-width: 150px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -42,12 +49,18 @@
                     <tr>
                         <td>{{ $package->pk_Package_id }}</td>
                         <td>{{ $package->title }}</td>
-                        <td>{{ $package->about }}</td>
+                        <td>
+                            {{ \Illuminate\Support\Str::limit($package->about, 100) }}
+                            @if(strlen($package->about) > 100)
+                                <a href="#" class="text-primary" onclick="event.preventDefault(); this.nextElementSibling.style.display='inline'; this.style.display='none';">Read More</a>
+                                <span style="display: none;">{{ substr($package->about, 100) }}</span>
+                            @endif
+                        </td>
                         <td>{{ $package->location }}</td>
                         <td>{{ $package->duration }}</td>
                         <td>{{ $package->tour_type }}</td>
                         <td>
-                            <img src="{{ asset($package->image) }}" alt="{{ $package->title }}" class="img-fluid rounded" style="max-height: 1200px; object-fit: cover;">
+                            <img src="{{ asset($package->image) }}" alt="{{ $package->title }}" class="img-fluid rounded package-image">
                         </td>
                         <td>{{ $package->group_size }}</td>
                         <td>{{ $package->tour_guide }}</td>
@@ -57,15 +70,11 @@
                             @if (!$package->hasItineraries)
                                 <a href="{{ route('create.itinerary', $package->pk_Package_id) }}" class="btn btn-primary btn-sm">Create Itineraries</a>
                             @else
-                           
-
-                            <form action="{{ route('itineraries.destroyByPackage', $package->pk_Package_id) }}" method="POST" style="display:inline;">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete all itineraries for this package?')">Delete All Itineraries</button>
-</form>
-
-
+                                <form action="{{ route('itineraries.destroyByPackage', $package->pk_Package_id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete all itineraries for this package?')">Delete All Itineraries</button>
+                                </form>
                             @endif
 
                             <a href="{{ route('packages.edit', $package->pk_Package_id) }}" class="btn btn-warning btn-sm">Edit Package</a>

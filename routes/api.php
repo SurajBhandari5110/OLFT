@@ -1,9 +1,16 @@
 <?php
-
+use App\Package;
 use App\TourGuide;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\TourController;
+use App\Http\Controllers\TourGuideController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\InclusionController;
+use App\Http\Controllers\ItinerariesController;
+use App\Http\Controllers\GalleryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,21 +23,17 @@ use App\Http\Controllers\PackageController;
 |
 */
 
+
+// Route to fetch packages data
+Route::get('/packages', [TourController::class, 'index']);
+
+// Optional: Test route to check API connectivity
+Route::get('/test', function () {
+    return response()->json(['message' => 'API is working!']);
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('list',[PackageController::class,'getData']);
-
-use App\Package;
-
-
-
-
-Route::get('packages', function () {
-    $packages = Package::all(); // Fetch all packages
-    return view('packages.index', compact('packages'));
-});
-
-
 
 

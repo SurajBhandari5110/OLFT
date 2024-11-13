@@ -17,6 +17,7 @@ class PackageController extends Controller
         // Check if there are itineraries for each package based on pk_Package_id
         $package->hasItineraries = Itineraries::where('pk_Package_id', $package->pk_Package_id)->exists();
     }
+    
 
     return view('packages.index', compact('packages'));
 }
