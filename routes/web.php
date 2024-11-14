@@ -1,6 +1,6 @@
 
 <?php
-
+use App\Http\Controllers\PackageStayController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\TourController;
@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\InclusionController;
 use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\StaysController;
 
 
 /*
@@ -90,6 +91,26 @@ Route::middleware(['admin'])->group(function () {
         Route::post('/store', [GalleryController::class, 'store'])->name('galleries.store');
         Route::get('/', [GalleryController::class, 'index'])->name('galleries.index');
     });
+    Route::prefix('stays')->group(function () {
+        Route::get('/', [StaysController::class, 'index'])->name('stays.index');
+        Route::get('/create', [StaysController::class, 'create'])->name('stays.create');
+        Route::post('/stays', [StaysController::class, 'store'])->name('stays.store');
+        Route::get('/{id}/edit', [StaysController::class, 'edit'])->name('stays.edit');
+    Route::put('/{id}', [StaysController::class, 'update'])->name('stays.update');
+    Route::delete('/{id}', [StaysController::class, 'destroy'])->name('stays.destroy');
+
+    });
+
     
 });
 Route::post('/packages/upload-gallery-image', [PackageController::class, 'uploadGalleryImage'])->name('packages.uploadGalleryImage');
+
+// routes/web.php
+
+
+
+Route::get('package_stays/{pk_Package_id}', [PackageStayController::class, 'create'])
+    ->name('package_stays.create');
+Route::post('/package_stays/{pk_Package_id}/add', [PackageStayController::class, 'store'])
+    ->name('package_stays.store');
+    

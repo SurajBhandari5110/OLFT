@@ -19,7 +19,8 @@ class Package extends Model
     protected $fillable = [
         'title',
         'about',
-        'location',
+        'country',
+        'state',
         'duration',
         'tour_type',
         'image',

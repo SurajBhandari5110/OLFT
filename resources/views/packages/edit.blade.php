@@ -44,8 +44,12 @@
             </div>
 
             <div class="form-group">
-                <label for="location">Location</label>
-                <input type="text" name="location" class="form-control" value="{{ $package->location }}" required>
+                <label for="location">Country</label>
+                <input type="text" name="location" class="form-control" value="{{ $package->country }}" required>
+            </div>
+            <div class="form-group">
+                <label for="location">State</label>
+                <input type="text" name="location" class="form-control" value="{{ $package->state }}" required>
             </div>
 
             <div class="form-group">
@@ -79,6 +83,10 @@
                     <option value="1" {{ $package->travel_with_bus == 1 ? 'selected' : '' }}>Yes</option>
                     <option value="0" {{ $package->travel_with_bus == 0 ? 'selected' : '' }}>No</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="stays">Stays</label>
+                <input type="text" name="coordinates" class="form-control" value="{{ $package->stays }}">
             </div>
 
             <div class="form-group">
