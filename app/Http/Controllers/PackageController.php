@@ -31,30 +31,42 @@ class PackageController extends Controller
     }
 
     public function store(Request $request)
-    {
+{
+    // Validate incoming data
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'about' => 'required|string',
+        'country' => 'required|string',
+        'state' => 'required|string',
+        'location' => 'required|string',
+        'duration' => 'required|integer',
+        'tour_type' => 'required|string',
+        'group_size' => 'required|integer',
+        'tour_guide' => 'required|string',
+        'coordinates' => 'required|string',
+        'travel_with_bus' => 'required|string',
+        'image' => 'required|image|max:2048', // Adjust max size if needed
+    ]);
+
+    $requestData = $request->except('image'); // Get all data except image
+    
+    // Process and store the image if uploaded
+    if ($request->hasFile('image')) {
         $file = $request->file('image');
-        $requestData = $request->all();
         $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', $request->input('title'));
-        // $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', strtolower($request->input('title')));
         $fileName = $sanitizedTitle . '.' . $file->getClientOriginalExtension();
 
-
-        // $path = $request->file('image')->storeAs('packages', $fileName, 'public');
-        // $requestData["image"] = 'storage/'.$path;
+        // Store image in S3 and get the URL
         $path = Storage::disk('s3')->putFileAs('packages', $file, $fileName);
-
-        // Set the file's full URL in the request data
         $requestData['image'] = Storage::disk('s3')->url($path);
-
-        // $img = env . 'packages/' . $var->imageName
-
-
-
-        Package::create($requestData);
-
-
-        return redirect()->route('packages.index')->with('success', 'Package created successfully!');
     }
+
+    // Create the package record in the database
+    Package::create($requestData);
+
+    // Redirect with success message
+    return redirect()->route('packages.index')->with('success', 'Package created successfully!');
+}
 
 
     public function show($id)

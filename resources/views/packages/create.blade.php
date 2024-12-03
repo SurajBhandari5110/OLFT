@@ -18,25 +18,42 @@
   <div class="card-header">Create New Package</div>
   <div class="card-body">
        
-      <form action="{{ url('packages') }}" method="post" enctype="multipart/form-data">
-        {!! csrf_field() !!}
-        <label>Title</label></br>
-        <input type="text" name="title" id="title" class="form-control"></br>
-        <label>About Place</label></br>
-        <input type="text" name="about" id="about" class="form-control"></br>
-        <label>Destination Loaction</label></br>
-        <input type="text" name="location" id="location" class="form-control"></br>
-        <label>Duration</label></br>
-        <input type="number" name="duration" id="duration" class="form-control"></br>
-        <label>Tour-type</label></br>
-        <input type="text" name="tour_type" id="tour_type" class="form-control"></br>
-        <label>Group Size</label></br>
-        <input type="number" name="tour_type" id="group_size" class="group_size">
-        </br>
-        <label>Tour Guide</label></br>
-        <input type="number" name="tour_guide" id="tour_guide" class="group_size"> </br>
-        <label>Travel With Bus</label></br>
-        <input type="text" name="travel_with_bus" id="travel_with_bus" class="form-control"></br>
+  <form action="{{ url('packages/store') }}" method="post" enctype="multipart/form-data">
+    {!! csrf_field() !!}
+
+    <label>Title</label><br>
+    <input type="text" name="title" id="title" class="form-control" required><br>
+
+    <label>About Place</label><br>
+    <input type="text" name="about" id="about" class="form-control" required><br>
+
+    <label>Country</label><br>
+    <input type="text" name="country" id="country" class="form-control" required><br>
+
+    <label>State</label><br>
+    <input type="text" name="state" id="state" class="form-control" required><br>
+
+    <label>Destination Location</label><br>
+    <input type="text" name="location" id="location" class="form-control" required><br>
+
+    <label>Duration</label><br>
+    <input type="number" name="duration" id="duration" class="form-control" required><br>
+
+    <label>Tour Type</label><br>
+    <input type="text" name="tour_type" id="tour_type" class="form-control" required><br>
+
+    <label>Group Size</label><br>
+    <input type="number" name="group_size" id="group_size" class="form-control" required><br>
+
+    <label>Tour Guide</label><br>
+    <input type="text" name="tour_guide" id="tour_guide" class="form-control" required><br>
+
+    <label>Coordinates</label><br>
+    <input type="text" name="coordinates" id="coordinates" class="form-control"><br>
+
+    <label>Travel With Bus</label><br>
+    <input type="text" name="travel_with_bus" id="travel_with_bus" class="form-control"><br>
+
         <label for="image">Upload Image</label>
         <div class="form-group">
                 

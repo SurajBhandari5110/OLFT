@@ -37,7 +37,7 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/', [PackageController::class, 'index'])->name('packages.index');
         // Route::get('packages', [PackageController::class, 'index'])->name('packages.index');  // List all packages
         Route::get('/create', [PackageController::class, 'create'])->name('packages.create');  // Show form to create a new package
-        Route::post('/', [PackageController::class, 'store'])->name('packages.store');  // Store a new package
+        Route::post('/store', [PackageController::class, 'store'])->name('packages.store');  // Store a new package
         Route::get('/{id}/edit', [PackageController::class, 'edit'])->name('packages.edit');  // Show form to edit a package
         Route::put('/{id}', [PackageController::class, 'update'])->name('packages.update');  // Update an existing package
         Route::delete('/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');   // List all packages
