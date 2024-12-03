@@ -44,17 +44,23 @@
             </div>
 
             <div class="form-group">
-                <label for="location">Country</label>
-                <input type="text" name="location" class="form-control" value="{{ $package->country }}" required>
+                <label for="country">Country</label>
+                <input type="text" name="country" class="form-control" value="{{ $package->country }}" required>
             </div>
+
             <div class="form-group">
-                <label for="location">State</label>
-                <input type="text" name="location" class="form-control" value="{{ $package->state }}" required>
+                <label for="state">State</label>
+                <input type="text" name="state" class="form-control" value="{{ $package->state }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Destination Location</label>
+                <input type="text" name="location" class="form-control" value="{{ $package->location }}" required>
             </div>
 
             <div class="form-group">
                 <label for="duration">Duration</label>
-                <input type="text" name="duration" class="form-control" value="{{ $package->duration }}" required>
+                <input type="number" name="duration" class="form-control" value="{{ $package->duration }}" required>
             </div>
 
             <div class="form-group">
@@ -84,9 +90,10 @@
                     <option value="0" {{ $package->travel_with_bus == 0 ? 'selected' : '' }}>No</option>
                 </select>
             </div>
+
             <div class="form-group">
                 <label for="stays">Stays</label>
-                <input type="text" name="coordinates" class="form-control" value="{{ $package->stays }}">
+                <input type="text" name="stays" class="form-control" value="{{ $package->stays }}">
             </div>
 
             <div class="form-group">
@@ -124,7 +131,6 @@
         const imagePreview = document.getElementById('image-preview');
         const cropConfirmButton = document.getElementById('crop-confirm-button');
 
-        // Reset cropper function
         function resetCropper() {
             if (cropper) {
                 cropper.destroy();
@@ -135,14 +141,12 @@
             imagePreview.src = '';
         }
 
-        // Initialize cropper on selecting a file
         imageInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     resetCropper();
-
                     imagePreview.src = event.target.result;
                     imagePreview.style.display = 'block';
                     cropConfirmButton.style.display = 'inline-block';
@@ -161,23 +165,19 @@
             if (cropper) {
                 const canvas = cropper.getCroppedCanvas();
                 canvas.toBlob((blob) => {
-                    const croppedFile = new File([blob], value="{{$package->pk_Package_id}}", { type: 'image/jpeg' });
+                    const croppedFile = new File([blob], imageInput.files[0].name, { type: 'image/jpeg' });
 
-                    // Update the input field with the cropped file
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(croppedFile);
                     imageInput.files = dataTransfer.files;
 
-                    // Hide preview and button after crop
                     imagePreview.style.display = 'none';
                     cropConfirmButton.style.display = 'none';
-                }, 'image/jpeg/png');
+                }, 'image/jpeg');
             }
         });
 
-        // Reset cropper on form reset
         document.querySelector('form').addEventListener('reset', resetCropper);
     </script>
-
 </body>
 </html>
