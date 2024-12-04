@@ -108,7 +108,7 @@ class PackageController extends Controller
 
                 // Store the new image
                 $file = $request->file('image');
-                $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', $request->input('title'));
+                $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', $id);
                 $fileName = $sanitizedTitle . '.' . $file->getClientOriginalExtension();
                 $path = Storage::disk('s3')->putFileAs('packages', $file, $fileName);
 
