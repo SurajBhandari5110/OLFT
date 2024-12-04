@@ -40,7 +40,7 @@
             </div>
 
             <div class="form-group">
-                <label for="image">Upload New Image</label>
+                <label for="image" style="font-size:12px; color:red;">Image size must be 500KB or less!</label>
                 <input type="file" name="image" id="image-input" class="form-control-file" required>
                 <div class="mt-2">
                     <img id="image-preview" alt="Image Preview">
@@ -57,52 +57,68 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script>
-        let cropper;
-        const imageInput = document.getElementById('image-input');
-        const imagePreview = document.getElementById('image-preview');
-        const cropContainer = document.querySelector('.crop-container');
-        const cropConfirmButton = document.getElementById('crop-confirm-button');
+    let cropper;
+    const imageInput = document.getElementById('image-input');
+    const imagePreview = document.getElementById('image-preview');
+    const cropContainer = document.querySelector('.crop-container');
+    const cropConfirmButton = document.getElementById('crop-confirm-button');
+    const MAX_FILE_SIZE = 500 * 1024; // 500 KB
 
-        // Initialize the cropper when a new file is selected
-        imageInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    imagePreview.src = event.target.result;
-                    imagePreview.style.display = 'block';
-                    cropContainer.style.display = 'block';
-                    initCropper(imagePreview);
-                };
-                reader.readAsDataURL(file);
+    // Initialize the cropper when a new file is selected
+    imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Check file size
+            if (file.size > MAX_FILE_SIZE) {
+                alert("File size exceeds 500KB. Please select a smaller file.");
+                imageInput.value = ""; // Reset the input
+                return;
             }
-        });
 
-        function initCropper(imageElement) {
-            if (cropper) {
-                cropper.destroy(); // Destroy any existing cropper instance
-            }
-            cropper = new Cropper(imageElement, {
-                aspectRatio: 1,
-                viewMode: 2,
-                autoCropArea: 1,
-            });
+            // File is valid; proceed to load it for cropping
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                imagePreview.src = event.target.result;
+                imagePreview.style.display = 'block';
+                cropContainer.style.display = 'block';
+                initCropper(imagePreview);
+            };
+            reader.readAsDataURL(file);
         }
+    });
 
-        cropConfirmButton.addEventListener('click', () => {
-            const canvas = cropper.getCroppedCanvas();
-            canvas.toBlob((blob) => {
-                const croppedFile = new File([blob], value={{$tourguide->id}}, { type: 'image/jpeg' });
-
-                // Prepare the cropped image for upload
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(croppedFile);
-                imageInput.files = dataTransfer.files;
-
-                cropContainer.style.display = 'none';
-                imagePreview.style.display = 'none';
-            }, 'image/jpeg');
+    function initCropper(imageElement) {
+        if (cropper) {
+            cropper.destroy(); // Destroy any existing cropper instance
+        }
+        cropper = new Cropper(imageElement, {
+            aspectRatio: 1,
+            viewMode: 2,
+            autoCropArea: 1,
         });
-    </script>
+    }
+
+    cropConfirmButton.addEventListener('click', () => {
+        const canvas = cropper.getCroppedCanvas();
+        canvas.toBlob((blob) => {
+            // Ensure cropped blob is within size limit
+            if (blob.size > MAX_FILE_SIZE) {
+                alert("Cropped image exceeds 500KB. Please crop smaller area.");
+                return;
+            }
+
+            const croppedFile = new File([blob], `${Date.now()}.jpg`, { type: 'image/jpeg' });
+
+            // Prepare the cropped image for upload
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(croppedFile);
+            imageInput.files = dataTransfer.files;
+
+            cropContainer.style.display = 'none';
+            imagePreview.style.display = 'none';
+        }, 'image/jpeg');
+    });
+</script>
+
 </body>
 </html>

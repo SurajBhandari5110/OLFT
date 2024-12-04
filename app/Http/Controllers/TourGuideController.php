@@ -55,50 +55,46 @@ class TourGuideController extends Controller
         return view('tourguides.edit', compact('tourguide'));
     }
    
-public function update(Request $request, $id)
-{
-    $tourguide = TourGuide::findOrFail($id);
-
-    // Validate request data
-    $request->validate([
-        'captain' => 'required|string|max:255',
-        'phn_number' => 'required|string|max:20',
-        'insta' => 'nullable|url',
-        'image' => 'nullable|image|max:2048'
-    ]);
-
-    // Handle image cropping and upload to S3
-    if ($request->hasFile('image')) {
-        // Delete old image from S3
-        if ($tourguide->image) {
-            Storage::disk('s3')->delete(parse_url($tourguide->image));
+    public function update(Request $request, $id)
+    {
+        $tourguide = TourGuide::findOrFail($id);
+    
+        // Validate request data
+        $request->validate([
+            'captain' => 'required|string|max:255',
+            'phn_number' => 'required|string|max:20',
+            'insta' => 'nullable|string|max:255', // Updated validation
+            'image' => 'nullable|image|max:2048',
+        ]);
+    
+        // Handle image upload and cropping
+        if ($request->hasFile('image')) {
+            // Delete old image from S3
+            if ($tourguide->image) {
+                $oldImageKey = str_replace(Storage::disk('s3')->url(''), '', $tourguide->image);
+                Storage::disk('s3')->delete($oldImageKey);
+            }
+    
+            // Upload new image to S3
+            $image = $request->file('image');
+            $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', $id);
+            $filename = $sanitizedTitle . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+    
+            // Store and get URL
+            $path = Storage::disk('s3')->putFileAs('tour_guides', $image, $filename);
+            $tourguide->image = Storage::disk('s3')->url($path);
         }
-
-        // Upload new image to S3
-        $image = $request->file('image');
-        $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', $request->input('captain'));
-        // $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', strtolower($request->input('title')));
-        $filename = $sanitizedTitle . '.' . $image->getClientOriginalExtension();
-
-        // Store new image in S3 and get URL
-        $path = Storage::disk('s3')->putFileAs('tour_guides', $image, $filename);
-        $imageUrl = Storage::disk('s3')->url($path);
-
-
-        // Update the tour guide's image URL in the database
-        $tourguide->image = $imageUrl;
+    
+        // Update other fields
+        $tourguide->update([
+            'captain' => $request->input('captain'),
+            'phn_number' => $request->input('phn_number'),
+            'insta' => $request->input('insta'),
+        ]);
+    
+        return redirect()->route('tourguides.index')->with('success', 'Tour Guide updated successfully!');
     }
-
-    // Update other fields
-    $tourguide->update([
-        'captain' => $request->input('captain'),
-        'phn_number' => $request->input('phn_number'),
-        'insta' => $request->input('insta'),
-    ]);
-
-    return redirect()->route('tourguides.index')->with('success', 'Tour Guide updated successfully!');
-}
-
+    
 
     // Delete an existing tour guide
     public function destroy($id)
