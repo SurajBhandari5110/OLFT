@@ -48,7 +48,18 @@ class GalleryController extends Controller
 
     return redirect()->route('galleries.index')->with('success', 'Images uploaded successfully!');
 }
+public function deleteGalleryImage($id)
+{
+    $gallery = Gallery::findOrFail($id);
 
+    // Delete the file from S3
+    Storage::disk('s3')->delete($gallery->image_url);
+
+    // Delete the database record
+    $gallery->delete();
+
+    return redirect()->back()->with('success', 'Image deleted successfully.');
+}
 
 
 }

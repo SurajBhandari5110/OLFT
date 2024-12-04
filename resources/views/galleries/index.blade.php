@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('content')
-    <div class="page-content">
+<div class="page-content">
         <div class="container-fluid">
             <h1>Galleries for Packages</h1>
 
@@ -17,7 +17,7 @@
                         <th>Package ID</th>
                         <th>Package Title</th>
                         <th>Images</th>
-                        <th>Action</th> <!-- New column for the "Add Image" button -->
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,14 +30,20 @@
                                     <p>No images available for this package.</p>
                                 @else
                                     @foreach ($package->galleries as $gallery)
-                                        <img src="{{ $gallery->image_url }}" alt="Image for {{ $package->title }}" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                                        <div class="gallery-item" style="display: inline-block; margin-right: 10px;">
+                                            <img src="{{ $gallery->image_url }}" alt="Image for {{ $package->title }}" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                                            <form action="{{ route('packages.deleteGalleryImage', $gallery->id) }}" method="POST" style="margin-top: 5px;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </div>
                                     @endforeach
                                 @endif
                             </td>
                             <td>
-                                <!-- Add Image button that opens a modal -->
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#uploadImageModal" data-package-id="{{ $package->pk_Package_id }}">
-                                    Add Image
+                                    Add Images
                                 </button>
                             </td>
                         </tr>
@@ -62,8 +68,9 @@
                     <div class="modal-body">
                         <input type="hidden" name="package_id" id="packageIdInput">
                         <div class="form-group">
-                            <label for="galleryImage">Select Image</label>
+                            
                             <input type="file" class="form-control-file" id="galleryImage" name="gallery_image" required>
+                            <label for="galleryImage"style="font-size:12px; color:red;">Image size must be 500KB or less!</label>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -78,6 +85,14 @@
 
 @section('javascript')
     <script>
+        document.getElementById('galleryImage').addEventListener('change', function () {
+    var file = this.files[0];
+    if (file && file.size > 512 * 1024) { // 512 KB
+        alert('The selected file is too large. Please upload an image of 500 KB or less.');
+        this.value = ''; // Clear the file input
+    }
+});
+
         // Pass the package ID to the modal
         $('#uploadImageModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);

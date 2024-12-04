@@ -100,6 +100,8 @@ Route::middleware(['admin'])->group(function () {
     Route::delete('/{id}', [StaysController::class, 'destroy'])->name('stays.destroy');
 
     });
+    Route::delete('/packages/gallery/{id}', [GalleryController::class, 'deleteGalleryImage'])->name('packages.deleteGalleryImage');
+
 
     
 });
