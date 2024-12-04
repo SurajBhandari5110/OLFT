@@ -44,6 +44,7 @@
         <div class="form-group">
                 
                 <input type="file" name="image" class="form-control-file" id="image-input">
+                <label for="image" style="font-size:12px; color:red;">Image size must be 500KB or less!</label>
             </div>
 
             <div class="crop-container">
@@ -60,65 +61,79 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
     <script>
-        let cropper;
-        const imageInput = document.getElementById('image-input');
-        const imagePreview = document.getElementById('image-preview');
-        const cropConfirmButton = document.getElementById('crop-confirm-button');
+    let cropper;
+    const imageInput = document.getElementById('image-input');
+    const imagePreview = document.getElementById('image-preview');
+    const cropConfirmButton = document.getElementById('crop-confirm-button');
+    const MAX_FILE_SIZE = 500 * 1024; // 500KB
 
-        // Reset cropper function
-        function resetCropper() {
-            if (cropper) {
-                cropper.destroy();
-                cropper = null;
-            }
-            imagePreview.style.display = 'none';
-            cropConfirmButton.style.display = 'none';
-            imagePreview.src = '';
+    // Reset cropper function
+    function resetCropper() {
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
         }
+        imagePreview.style.display = 'none';
+        cropConfirmButton.style.display = 'none';
+        imagePreview.src = '';
+    }
 
-        // Initialize cropper on selecting a file
-        imageInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    resetCropper();
-
-                    imagePreview.src = event.target.result;
-                    imagePreview.style.display = 'block';
-                    cropConfirmButton.style.display = 'inline-block';
-
-                    cropper = new Cropper(imagePreview, {
-                        aspectRatio: 1,
-                        viewMode: 2,
-                        autoCropArea: 1,
-                    });
-                };
-                reader.readAsDataURL(file);
+    // Initialize cropper on selecting a file
+    imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // File size validation
+            if (file.size > MAX_FILE_SIZE) {
+                alert("File size exceeds 500KB. Please select a smaller file.");
+                imageInput.value = ""; // Reset the input
+                return;
             }
-        });
 
-        cropConfirmButton.addEventListener('click', () => {
-            if (cropper) {
-                const canvas = cropper.getCroppedCanvas();
-                canvas.toBlob((blob) => {
-                    const croppedFile = new File([blob], 'new', { type: 'image/jpeg' });
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                resetCropper();
 
-                    // Update the input field with the cropped file
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(croppedFile);
-                    imageInput.files = dataTransfer.files;
+                imagePreview.src = event.target.result;
+                imagePreview.style.display = 'block';
+                cropConfirmButton.style.display = 'inline-block';
 
-                    // Hide preview and button after crop
-                    imagePreview.style.display = 'none';
-                    cropConfirmButton.style.display = 'none';
-                }, 'image/jpeg/png');
-            }
-        });
+                cropper = new Cropper(imagePreview, {
+                    aspectRatio: 1,
+                    viewMode: 2,
+                    autoCropArea: 1,
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
-        // Reset cropper on form reset
-        document.querySelector('form').addEventListener('reset', resetCropper);
-    </script>
+    cropConfirmButton.addEventListener('click', () => {
+        if (cropper) {
+            const canvas = cropper.getCroppedCanvas();
+            canvas.toBlob((blob) => {
+                // Validate cropped image size
+                if (blob.size > MAX_FILE_SIZE) {
+                    alert("Cropped image exceeds 500KB. Please crop a smaller area.");
+                    return;
+                }
+
+                const croppedFile = new File([blob], 'cropped.jpg', { type: 'image/jpeg' });
+
+                // Update the input field with the cropped file
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(croppedFile);
+                imageInput.files = dataTransfer.files;
+
+                // Hide preview and button after crop
+                imagePreview.style.display = 'none';
+                cropConfirmButton.style.display = 'none';
+            }, 'image/jpeg');
+        }
+    });
+
+    // Reset cropper on form reset
+    document.querySelector('form').addEventListener('reset', resetCropper);
+</script>
 
 
 </body>
