@@ -38,7 +38,6 @@ class PackageController extends Controller
         'about' => 'required|string',
         'country' => 'required|string',
         'state' => 'required|string',
-        'location' => 'required|string',
         'duration' => 'required|integer',
         'tour_type' => 'required|string',
         'group_size' => 'required|integer',

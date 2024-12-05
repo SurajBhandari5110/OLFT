@@ -14,7 +14,10 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Edit Package</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Edit Package</h1>
+    <a href="{{ route('packages.index') }}" class="btn btn-outline-info btn-lg">View All Packages</a>
+</div>
 
         <!-- Display success or error messages -->
         @if(session('success'))
@@ -53,10 +56,6 @@
                 <input type="text" name="state" class="form-control" value="{{ $package->state }}" required>
             </div>
 
-            <div class="form-group">
-                <label for="location">Destination Location</label>
-                <input type="text" name="location" class="form-control" value="{{ $package->location }}" required>
-            </div>
 
             <div class="form-group">
                 <label for="duration">Duration</label>

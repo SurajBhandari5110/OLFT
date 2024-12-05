@@ -32,10 +32,7 @@
 
     <label>State</label><br>
     <input type="text" name="state" id="state" class="form-control" required><br>
-
-    <label>Destination Location</label><br>
-    <input type="text" name="location" id="location" class="form-control" required><br>
-
+    
     <label>Duration</label><br>
     <input type="number" name="duration" id="duration" class="form-control" required><br>
 
