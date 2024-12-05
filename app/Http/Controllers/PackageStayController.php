@@ -55,6 +55,8 @@ class PackageStayController extends Controller
         $packageStay->pk_hotel_id = $request->input('pk_hotel_id');
         $packageStay->save();
 
-        return redirect()->route('packages.index')->with('success', 'Hotel added to the package successfully.');
+        // return redirect()->route('packages.index')->with('success', 'Hotel added to the package successfully.');
+        return redirect()->route('packages.edit', $pk_Package_id)
+                 ->with('success', 'Package created successfully! You can now edit the details.');
     }
 }
