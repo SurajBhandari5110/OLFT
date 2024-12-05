@@ -92,9 +92,12 @@
             </div>
 
             <div class="form-group">
-                <label for="stays">Stays</label>
-                <input type="text" name="stays" class="form-control" value="{{ $package->stays }}">
-            </div>
+    <a href="{{ route('inclusions.manage', ['packageId' => $package->pk_Package_id]) }}" class="btn btn-success btn-lg">Manage Inclusions</a>
+    <a href="{{ route('package_stays.create', ['pk_Package_id' => $package]) }}" class="btn btn-primary btn-lg">Add Stays</a>
+   
+
+</div>
+
 
             <div class="form-group">
                 <label for="image">Current Image</label><br>
@@ -118,6 +121,7 @@
             <button type="submit" class="btn btn-primary">Update Package</button>
             <a href="{{ route('packages.index') }}" class="btn btn-secondary">Cancel</a>
         </form>
+        
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

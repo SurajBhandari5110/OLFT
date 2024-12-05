@@ -65,7 +65,16 @@ class PackageController extends Controller
     Package::create($requestData);
 
     // Redirect with success message
-    return redirect()->route('packages.index')->with('success', 'Package created successfully!');
+    $package = Package::create($requestData);  // This should return a Package instance
+
+// Verify the instance creation
+if (!$package) {
+    return redirect()->route('packages.index')->with('error', 'Failed to create the package.');
+}
+
+// Redirect to the edit route for the newly created package
+return redirect()->route('packages.edit', $package->pk_Package_id)
+                 ->with('success', 'Package created successfully! You can now edit the details.');
 }
 
 

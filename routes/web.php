@@ -116,3 +116,4 @@ Route::get('package_stays/{pk_Package_id}', [PackageStayController::class, 'crea
 Route::post('/package_stays/{pk_Package_id}/add', [PackageStayController::class, 'store'])
     ->name('package_stays.store');
     
+Route::match(['get', 'post'], '/inclusions/manage/{packageId}', [InclusionController::class, 'manage'])->name('inclusions.manage');
