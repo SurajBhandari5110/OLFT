@@ -61,8 +61,7 @@ class PackageController extends Controller
         $requestData['image'] = Storage::disk('s3')->url($path);
     }
 
-    // Create the package record in the database
-    Package::create($requestData);
+   
 
     // Redirect with success message
     $package = Package::create($requestData);  // This should return a Package instance

@@ -71,8 +71,7 @@
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this package?')">Delete Package</button>
                                 </form>
 
-                                <a href="{{ route('inclusions.create', ['packageId' => $package->pk_Package_id]) }}" class="btn btn-success btn-sm">Manage Inclusions</a>
-                                <a href="{{ route('package_stays.create', ['pk_Package_id'=>$package]) }}" class="btn btn-primary btn-sm">Add Stays</a>
+                                
 
                             </td>
                         </tr>
