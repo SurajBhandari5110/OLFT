@@ -131,3 +131,4 @@ Route::get('/destinations/{id}/edit', [DestinationController::class, 'edit'])->n
 Route::put('/destinations/{id}', [DestinationController::class, 'update'])->name('destinations.update');
 Route::delete('/destinations/{id}', [DestinationController::class, 'destroy'])->name('destinations.destroy');
 
+Route::get('/destinations/country/{country}', [DestinationController::class, 'getDestinationsByCountry'])->name('destinations.byCountry');

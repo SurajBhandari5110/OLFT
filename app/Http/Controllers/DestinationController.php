@@ -117,6 +117,17 @@ class DestinationController extends Controller
 
         return redirect()->route('destinations.index')->with('success', 'Destination updated successfully!');
     }
+    public function getDestinationsByCountry($country)
+{
+    // Fetch destinations matching the country
+    $destinations = Destination::where('country', $country)->get();
+
+    // Return the destinations as JSON response
+    return response()->json([
+        'success' => true,
+        'data' => $destinations
+    ]);
+}
 }
 
  
