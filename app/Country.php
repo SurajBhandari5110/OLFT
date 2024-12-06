@@ -10,7 +10,7 @@ use App\Package;
 class Country extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'id';
+    
 
     // Table name (optional, defaults to "countries")
     protected $table = 'countries';

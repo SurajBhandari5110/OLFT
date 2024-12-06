@@ -51,7 +51,7 @@
     <select name="country" id="country" class="form-control" required>
     <option value="" disabled selected>Select a Country</option>
     @foreach($countries as $country)
-        <option value="{{ $country->id }}">{{ $country->name }}</option>
+        <option value="{{ $country->name }}">{{ $country->name }}</option>
     @endforeach
     </select>
             </div>

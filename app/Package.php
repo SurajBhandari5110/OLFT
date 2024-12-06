@@ -44,7 +44,7 @@ class Package extends Model
     }
     public function country()
     {
-        return $this->belongsTo(Country::class, 'id');
+        return $this->belongsTo(Country::class, 'name');
     }
 
     public $timestamps = true;
