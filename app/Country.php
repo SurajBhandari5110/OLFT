@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use App\Package;
+use App\Destination;
 
 class Country extends Model
 {
@@ -22,5 +23,9 @@ class Country extends Model
     public function packages()
     {
         return $this->hasMany(Package::class, 'country');
+    }
+    public function destination()
+    {
+        return $this->hasMany(Destination::class, 'country');
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\InclusionController;
 use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\StaysController;
+use App\Http\Controllers\DestinationController;
 
 
 /*
@@ -118,3 +119,15 @@ Route::post('/package_stays/{pk_Package_id}/add', [PackageStayController::class,
     
 Route::match(['get', 'post'], '/inclusions/manage/{packageId}', [InclusionController::class, 'manage'])->name('inclusions.manage');
 Route::get('/galleries/package/{package_id}', [GalleryController::class, 'fetchByPackageId']);
+
+
+
+
+
+Route::get('/destinations', [DestinationController::class, 'index'])->name('destinations.index');
+Route::get('/destinations/create', [DestinationController::class, 'create'])->name('destinations.create');
+Route::post('/destinations', [DestinationController::class, 'store'])->name('destinations.store');
+Route::get('/destinations/{id}/edit', [DestinationController::class, 'edit'])->name('destinations.edit');
+Route::put('/destinations/{id}', [DestinationController::class, 'update'])->name('destinations.update');
+Route::delete('/destinations/{id}', [DestinationController::class, 'destroy'])->name('destinations.destroy');
+
