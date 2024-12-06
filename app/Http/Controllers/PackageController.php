@@ -178,6 +178,32 @@ return redirect()->route('packages.edit', $package->pk_Package_id)
 
     return back()->with('error', 'Failed to upload image.');
 }
+/**
+ * Fetch packages by country.
+ *
+ * @param  int  $countryId
+ * @return \Illuminate\Http\JsonResponse
+ */
+public function getPackagesByCountry($country)
+{
+    // Fetch packages belonging to the specified country
+    $packages = Package::where('country', $country)->get();
+
+    // Check if any packages are found
+    if ($packages->isEmpty()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No packages found for the specified country.',
+        ], 404);
+    }
+
+    // Return the packages as JSON
+    return response()->json([
+        'success' => true,
+        'data' => $packages,
+    ]);
+}
+
 
 
 
