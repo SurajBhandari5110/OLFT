@@ -117,3 +117,4 @@ Route::post('/package_stays/{pk_Package_id}/add', [PackageStayController::class,
     ->name('package_stays.store');
     
 Route::match(['get', 'post'], '/inclusions/manage/{packageId}', [InclusionController::class, 'manage'])->name('inclusions.manage');
+Route::get('/galleries/package/{package_id}', [GalleryController::class, 'fetchByPackageId']);

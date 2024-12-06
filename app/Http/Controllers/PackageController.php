@@ -1,17 +1,21 @@
 <?php
 namespace App\Http\Controllers;
-
+use App\Country;
 use App\Itineraries;
 use App\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
 
 class PackageController extends Controller
 {
     // Display a list of packages
     public function index()
 {
+    // $packages = Package::with('country')->get();
     $packages = Package::all();
+    
+    
 
     foreach ($packages as $package) {
         // Check if there are itineraries for each package based on pk_Package_id
@@ -21,22 +25,19 @@ class PackageController extends Controller
 
     return view('packages.index', compact('packages'));
 }
-    
+public function create()
+{
+    $countries =Country::all(); // Fetch all countries
+    return view('packages.create', compact('countries'));
+}
 
-
-    // Show the form for creating a new package
-    public function create()
-    {
-        return view('packages.create');
-    }
-
-    public function store(Request $request)
+public function store(Request $request)
 {
     // Validate incoming data
     $request->validate([
         'title' => 'required|string|max:255',
         'about' => 'required|string',
-        'country' => 'required|string',
+        'country' => 'required|exists:countries,id',
         'state' => 'required|string',
         'duration' => 'required|integer',
         'tour_type' => 'required|string',
@@ -97,7 +98,9 @@ return redirect()->route('packages.edit', $package->pk_Package_id)
     public function edit($id)
     {
         $package = Package::findOrFail($id);
-        return view('packages.edit', compact('package'));
+        $countries =Country::all(); // Fetch all countries
+        return view('packages.edit', compact('package','countries'));
+ 
     }
     public function update(Request $request, $id)
     {

@@ -42,7 +42,7 @@
                                     <span style="display: none;">{{ substr($package->about, 100) }}</span>
                                 @endif
                             </td>
-                            <td>{{ $package->country }}</td>
+                            <td>{{ $package->country}}</td>
                             <td>{{ $package->state }}</td>
                             <td>{{ $package->duration }}</td>
                             <td>{{ $package->tour_type }}</td>

@@ -27,8 +27,15 @@
     <label>About Place</label><br>
     <input type="text" name="about" id="about" class="form-control" required><br>
 
-    <label>Country</label><br>
-    <input type="text" name="country" id="country" class="form-control" required><br>
+    
+    <label for="country">Country</label>
+    <select name="country" id="country" class="form-control" required>
+    <option value="" disabled selected>Select a Country</option>
+    @foreach($countries as $country)
+        <option value="{{ $country->id }}">{{ $country->name }}</option>
+    @endforeach
+    </select>
+    
 
     <label>State</label><br>
     <input type="text" name="state" id="state" class="form-control" required><br>

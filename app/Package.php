@@ -42,6 +42,10 @@ class Package extends Model
     {
         return $this->hasMany(Itineraries::class, 'pk_Package_id', 'pk_Package_id'); // Define the relationship
     }
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'id');
+    }
 
     public $timestamps = true;
 }
