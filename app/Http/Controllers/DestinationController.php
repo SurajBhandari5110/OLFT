@@ -10,11 +10,7 @@ use App\Country;
 class DestinationController extends Controller
 {
     
-    /**
-     * Display a listing of the destinations for Voyager with a "Create New" button.
-     *
-     * @return \Illuminate\View\View
-     */
+     
     public function index()
     {
         $destinations = Destination::all();
@@ -28,12 +24,7 @@ class DestinationController extends Controller
         return view('destinations.create',compact('countries'));
     }
 
-    /**
-     * Store a newly created destination in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+   
     public function store(Request $request)
     {
         $request->validate([

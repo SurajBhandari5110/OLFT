@@ -23,12 +23,6 @@ use App\Http\Controllers\DestinationController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Public Routes
-Route::get('/', [TourController::class, 'index']);
-Route::get('footer', [ContactController::class, 'showFooter'])->name('footer.show');
-Route::get('package/{id}', [PackageController::class, 'show'])->name('package.show');
-Route::get('tourguide_data', [TourGuideController::class, 'show'])->name('tourguides.show');
-
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
@@ -91,45 +85,40 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/create/{package}', [GalleryController::class, 'create'])->name('galleries.create');
         Route::post('/store', [GalleryController::class, 'store'])->name('galleries.store');
         Route::get('/', [GalleryController::class, 'index'])->name('galleries.index');
+        
     });
     Route::prefix('stays')->group(function () {
         Route::get('/', [StaysController::class, 'index'])->name('stays.index');
         Route::get('/create', [StaysController::class, 'create'])->name('stays.create');
         Route::post('/stays', [StaysController::class, 'store'])->name('stays.store');
         Route::get('/{id}/edit', [StaysController::class, 'edit'])->name('stays.edit');
-    Route::put('/{id}', [StaysController::class, 'update'])->name('stays.update');
-    Route::delete('/{id}', [StaysController::class, 'destroy'])->name('stays.destroy');
+        Route::put('/{id}', [StaysController::class, 'update'])->name('stays.update');
+        Route::delete('/{id}', [StaysController::class, 'destroy'])->name('stays.destroy');
 
     });
-    Route::delete('/packages/gallery/{id}', [GalleryController::class, 'deleteGalleryImage'])->name('packages.deleteGalleryImage');
+    Route::prefix('destinations')->group(function () {
+        Route::get('/', [DestinationController::class, 'index'])->name('destinations.index');
+        Route::get('/create', [DestinationController::class, 'create'])->name('destinations.create');
+        Route::post('/', [DestinationController::class, 'store'])->name('destinations.store');
+        Route::get('/{destination}/edit', [DestinationController::class, 'edit'])->name('destinations.edit');
+        Route::put('/{destination}', [DestinationController::class, 'update'])->name('destinations.update');
+        Route::delete('/{destination}', [DestinationController::class, 'destroy'])->name('destinations.destroy');
+        });
 
-
-    
-});
-Route::post('/packages/upload-gallery-image', [PackageController::class, 'uploadGalleryImage'])->name('packages.uploadGalleryImage');
-
-// routes/web.php
-
-
-
-Route::get('package_stays/{pk_Package_id}', [PackageStayController::class, 'create'])
+    Route::get('package_stays/{pk_Package_id}', [PackageStayController::class, 'create'])
     ->name('package_stays.create');
-Route::post('/package_stays/{pk_Package_id}/add', [PackageStayController::class, 'store'])
+    Route::post('/package_stays/{pk_Package_id}/add', [PackageStayController::class, 'store'])
     ->name('package_stays.store');
-    
-Route::match(['get', 'post'], '/inclusions/manage/{packageId}', [InclusionController::class, 'manage'])->name('inclusions.manage');
-Route::get('/galleries/package/{package_id}', [GalleryController::class, 'fetchByPackageId']);
+    Route::match(['get', 'post'], '/inclusions/manage/{packageId}', [InclusionController::class, 'manage'])->name('inclusions.manage');
+    Route::delete('/packages/gallery/{id}', [GalleryController::class, 'deleteGalleryImage'])->name('packages.deleteGalleryImage');
+    Route::post('/packages/upload-gallery-image', [PackageController::class, 'uploadGalleryImage'])->name('packages.uploadGalleryImage');  
+});
 
-
-
-
-
-Route::get('/destinations', [DestinationController::class, 'index'])->name('destinations.index');
-Route::get('/destinations/create', [DestinationController::class, 'create'])->name('destinations.create');
-Route::post('/destinations', [DestinationController::class, 'store'])->name('destinations.store');
-Route::get('/destinations/{destination}/edit', [DestinationController::class, 'edit'])->name('destinations.edit');
-Route::put('/destinations/{destination}', [DestinationController::class, 'update'])->name('destinations.update');
-Route::delete('/destinations/{destination}', [DestinationController::class, 'destroy'])->name('destinations.destroy');
-
+//public routes
+Route::get('/', [TourController::class, 'index']);
+Route::get('footer', [ContactController::class, 'showFooter'])->name('footer.show');
+Route::get('package/{id}', [PackageController::class, 'show'])->name('package.show');
+Route::get('tourguide_data', [TourGuideController::class, 'show'])->name('tourguides.show');
+Route::get('galleries/package/{package_id}', [GalleryController::class, 'fetchByPackageId']);
 Route::get('/destinations/country/{country}', [DestinationController::class, 'getDestinationsByCountry'])->name('destinations.byCountry');
 Route::get('/packages/country/{country}', [PackageController::class, 'getPackagesByCountry']);
