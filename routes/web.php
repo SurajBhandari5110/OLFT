@@ -127,9 +127,9 @@ Route::get('/galleries/package/{package_id}', [GalleryController::class, 'fetchB
 Route::get('/destinations', [DestinationController::class, 'index'])->name('destinations.index');
 Route::get('/destinations/create', [DestinationController::class, 'create'])->name('destinations.create');
 Route::post('/destinations', [DestinationController::class, 'store'])->name('destinations.store');
-Route::get('/destinations/{id}/edit', [DestinationController::class, 'edit'])->name('destinations.edit');
-Route::put('/destinations/{id}', [DestinationController::class, 'update'])->name('destinations.update');
-Route::delete('/destinations/{id}', [DestinationController::class, 'destroy'])->name('destinations.destroy');
+Route::get('/destinations/{destination}/edit', [DestinationController::class, 'edit'])->name('destinations.edit');
+Route::put('/destinations/{destination}', [DestinationController::class, 'update'])->name('destinations.update');
+Route::delete('/destinations/{destination}', [DestinationController::class, 'destroy'])->name('destinations.destroy');
 
 Route::get('/destinations/country/{country}', [DestinationController::class, 'getDestinationsByCountry'])->name('destinations.byCountry');
 Route::get('/packages/country/{country}', [PackageController::class, 'getPackagesByCountry']);

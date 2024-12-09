@@ -21,11 +21,7 @@ class DestinationController extends Controller
         return view('destinations.index', compact('destinations'));
     }
 
-    /**
-     * Show the form for creating a new destination.
-     *
-     * @return \Illuminate\View\View
-     */
+   
     public function create()
     {
         $countries =Country::all();
