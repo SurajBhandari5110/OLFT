@@ -98,6 +98,9 @@
             <div class="form-group">
     <a href="{{ route('inclusions.manage', ['packageId' => $package->pk_Package_id]) }}" class="btn btn-success btn-lg">Manage Inclusions</a>
     <a href="{{ route('package_stays.create', ['pk_Package_id' => $package]) }}" class="btn btn-primary btn-lg">Add Stays</a>
+    <a href="{{ route('categories.manage', ['pk_Package_id' => $package]) }}" class="btn btn-warning btn-lg">Manage Categories</a>
+    <a href="{{ route('tags.manage', ['pk_Package_id' => $package->pk_Package_id]) }}" class="btn btn-info btn-lg">Manage Tags</a>
+
    
 
 </div>

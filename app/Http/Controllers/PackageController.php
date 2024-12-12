@@ -37,7 +37,7 @@ public function store(Request $request)
     $request->validate([
         'title' => 'required|string|max:255',
         'about' => 'required|string',
-        'country' => 'required|exists:countries,id',
+        'country' => 'required|exists:countries,name',
         'state' => 'required|string',
         'duration' => 'required|integer',
         'tour_type' => 'required|string',
@@ -178,13 +178,8 @@ return redirect()->route('packages.edit', $package->pk_Package_id)
 
     return back()->with('error', 'Failed to upload image.');
 }
-/**
- * Fetch packages by country.
- *
- * @param  int  $countryId
- * @return \Illuminate\Http\JsonResponse
- */
-public function getPackagesByCountry($country)
+
+ public function getPackagesByCountry($country)
 {
     // Fetch packages belonging to the specified country
     $packages = Package::where('country', $country)->get();

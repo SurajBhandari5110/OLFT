@@ -11,6 +11,8 @@ use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\StaysController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
 
 
 /*
@@ -122,3 +124,25 @@ Route::get('tourguide_data', [TourGuideController::class, 'show'])->name('tourgu
 Route::get('galleries/package/{package_id}', [GalleryController::class, 'fetchByPackageId']);
 Route::get('/destinations/country/{country}', [DestinationController::class, 'getDestinationsByCountry'])->name('destinations.byCountry');
 Route::get('/packages/country/{country}', [PackageController::class, 'getPackagesByCountry']);
+
+
+// tag and categories 
+
+
+// Categories management
+Route::get('/categories/manage/{pk_Package_id}', [CategoryController::class, 'manage'])->name('categories.manage');
+
+// Tags management
+Route::get('/tags/manage/{pk_Package_id}', [TagController::class, 'manage'])->name('tags.manage');
+
+Route::post('/categories/add', [CategoryController::class, 'add'])->name('categories.add');
+Route::post('/categories/remove', [CategoryController::class, 'remove'])->name('categories.remove');
+
+
+Route::post('/tags/add', [TagController::class, 'add'])->name('tags.add');
+Route::post('/tags/remove', [TagController::class, 'remove'])->name('tags.remove');
+
+//fetching
+Route::get('/category/{name}/', [CategoryController::class, 'fetchPackagesByCategory'])->name('categories.fetchBySlug');
+Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('tags.fetchBySlug');
+
