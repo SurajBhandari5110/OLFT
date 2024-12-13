@@ -16,6 +16,7 @@
         <div class="mb-3">
             <label for="primary_image" class="form-label">Primary Image</label>
             <input type="file" class="form-control" id="primary_image" name="primary_image">
+            <label for="image" style="font-size:12px; color:red;">Image size must be 500KB or less!</label>
             @if ($blog->primary_image)
                 <img src="{{ $blog->primary_image }}" alt="Primary Image" width="100" class="mt-2">
             @endif
@@ -23,6 +24,7 @@
         <div class="mb-3">
             <label for="secondary_image" class="form-label">Secondary Image</label>
             <input type="file" class="form-control" id="secondary_image" name="secondary_image">
+            <label for="image" style="font-size:12px; color:red;">Image size must be 500KB or less!</label>
             @if ($blog->secondary_image)
                 <img src="{{ $blog->secondary_image }}" alt="Secondary Image" width="100" class="mt-2">
             @endif
