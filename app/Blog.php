@@ -29,7 +29,9 @@ class Blog extends Model
         'secondary_image',
         'moto1',
         'para1',
+        'para2',
         'moto2',
+       
     ];
 
     

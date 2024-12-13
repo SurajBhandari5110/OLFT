@@ -13,6 +13,7 @@ use App\Http\Controllers\StaysController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\BlogController;
 
 
 /*
@@ -114,19 +115,7 @@ Route::middleware(['admin'])->group(function () {
     Route::match(['get', 'post'], '/inclusions/manage/{packageId}', [InclusionController::class, 'manage'])->name('inclusions.manage');
     Route::delete('/packages/gallery/{id}', [GalleryController::class, 'deleteGalleryImage'])->name('packages.deleteGalleryImage');
     Route::post('/packages/upload-gallery-image', [PackageController::class, 'uploadGalleryImage'])->name('packages.uploadGalleryImage');  
-});
-
-//public routes
-Route::get('/', [TourController::class, 'index']);
-Route::get('footer', [ContactController::class, 'showFooter'])->name('footer.show');
-Route::get('package/{id}', [PackageController::class, 'show'])->name('package.show');
-Route::get('tourguide_data', [TourGuideController::class, 'show'])->name('tourguides.show');
-Route::get('galleries/package/{package_id}', [GalleryController::class, 'fetchByPackageId']);
-Route::get('/destinations/country/{country}', [DestinationController::class, 'getDestinationsByCountry'])->name('destinations.byCountry');
-Route::get('/packages/country/{country}', [PackageController::class, 'getPackagesByCountry']);
-
-
-// tag and categories 
+    // tag and categories 
 
 
 // Categories management
@@ -141,8 +130,29 @@ Route::post('/categories/remove', [CategoryController::class, 'remove'])->name('
 
 Route::post('/tags/add', [TagController::class, 'add'])->name('tags.add');
 Route::post('/tags/remove', [TagController::class, 'remove'])->name('tags.remove');
+// Blog Routes
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index'); // Display all blogs
+Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create'); // Show form to create a new blog
+Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store'); // Store a new blog
+Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blogs.edit'); // Show form to edit a blog
+Route::put('/blogs/{id}', [BlogController::class, 'update'])->name('blogs.update'); // Update an existing blog
+Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // Delete a blog
+});
 
-//fetching
+//Public Routes
+Route::get('/', [TourController::class, 'index']);
+Route::get('footer', [ContactController::class, 'showFooter'])->name('footer.show');
+Route::get('package/{id}', [PackageController::class, 'show'])->name('package.show');
+Route::get('tourguide_data', [TourGuideController::class, 'show'])->name('tourguides.show');
+Route::get('galleries/package/{package_id}', [GalleryController::class, 'fetchByPackageId']);
+Route::get('/destinations/country/{country}', [DestinationController::class, 'getDestinationsByCountry'])->name('destinations.byCountry');
+Route::get('/packages/country/{country}', [PackageController::class, 'getPackagesByCountry']);
+
+//fetching by categry and tags
 Route::get('/category/{name}/', [CategoryController::class, 'fetchPackagesByCategory'])->name('categories.fetchBySlug');
 Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('tags.fetchBySlug');
+
+//fetching blogs
+Route::get('/blogs_details', [BlogController::class, 'fetchBlog']); // Display all blogs
+Route::get('/blogs_details/{id}', [BlogController::class, 'show'])->name('blogs.show');
 
