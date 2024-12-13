@@ -25,11 +25,13 @@
         <div class="form-group">
             <label for="primary_image">Primary Image</label>
             <input type="file" name="primary_image" id="primary_image" class="form-control" required>
+            <label for="image" style="font-size:12px; color:red;">Image size must be 500KB or less!</label>
         </div>
 
         <div class="form-group">
             <label for="secondary_image">Secondary Image</label>
             <input type="file" name="secondary_image" id="secondary_image" class="form-control">
+            <label for="image" style="font-size:12px; color:red;">Image size must be 500KB or less!</label>
         </div>
 
         <div class="form-group">
