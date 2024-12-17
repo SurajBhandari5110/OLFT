@@ -14,6 +14,7 @@ use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ClientQueryController;
 
 
 /*
@@ -137,6 +138,11 @@ Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store'); //
 Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blogs.edit'); // Show form to edit a blog
 Route::put('/blogs/{id}', [BlogController::class, 'update'])->name('blogs.update'); // Update an existing blog
 Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // Delete a blog
+// Routes for ClientQuery
+Route::get('client_queries', [ClientQueryController::class, 'index'])->name('client_queries.index');
+Route::get('client_queries/create', [ClientQueryController::class, 'create'])->name('client_queries.create');
+Route::post('client_queries/store', [ClientQueryController::class, 'store'])->name('client_queries.store');
+Route::get('client_queries/{id}', [ClientQueryController::class, 'show'])->name('client_queries.show');
 });
 
 //Public Routes
@@ -155,4 +161,8 @@ Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('t
 //fetching blogs
 Route::get('/blogs_details', [BlogController::class, 'fetchBlog']); // Display all blogs
 Route::get('/blogs_details/{id}', [BlogController::class, 'show'])->name('blogs.show');
+
+
+
+
 

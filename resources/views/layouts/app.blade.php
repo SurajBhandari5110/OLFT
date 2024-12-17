@@ -8,9 +8,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('blogs.index') }}">Blog Management</a>
-        </div>
+        
     </nav>
     <div class="container mt-4">
         @if (session('success'))
