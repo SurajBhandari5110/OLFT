@@ -11,6 +11,7 @@
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <h1 class="text-center mb-4">Manage Tags for Package</h1>
+                
              
 
                 <!-- Add a tag -->
@@ -57,6 +58,10 @@
                             <p class="text-center">No tags assigned to this package yet.</p>
                         @endif
                     </div>
+                    
+                    
+                    <a href="{{ route('back.to.edit', ['pk_Package_id' => $pk_Package_id]) }}" class="btn btn-secondary">Back to Edit Package</a>
+
                 </div>
             </div>
         </div>

@@ -57,6 +57,7 @@
                             <p class="text-center">No categories assigned to this package yet.</p>
                         @endif
                     </div>
+                    <a href="{{ route('back.to.edit', ['pk_Package_id' => $pk_Package_id]) }}" class="btn btn-secondary">Back to Edit Package</a>
                 </div>
             </div>
         </div>

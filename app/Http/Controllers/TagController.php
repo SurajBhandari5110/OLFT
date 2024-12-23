@@ -6,13 +6,14 @@ use App\Tag;
 use App\TourTag;
 use Illuminate\Http\Request;
 
-
+use App\Package;
 
 class TagController extends Controller
 {
     // Method to display tags associated with a package
     public function manage($pk_Package_id)
     {
+        $packages = Package::all();
         $tags = Tag::all(); // Fetch all available tags
         $selectedTags = TourTag::where('pk_Package_id', $pk_Package_id)->pluck('tag')->toArray(); // Fetch tags for the package
 
@@ -45,6 +46,7 @@ class TagController extends Controller
         TourTag::where('pk_Package_id', $request->pk_Package_id)
             ->where('tag', $request->tag)
             ->delete();
+        
 
         return redirect()->route('tags.manage', $request->pk_Package_id)->with('success', 'Tag removed successfully.');
     }
@@ -68,6 +70,10 @@ class TagController extends Controller
             'data' => $packages,
         ]);
 }
+public function backToEdit($pk_Package_id)
+    {
+        return redirect()->route('packages.edit', ['id' => $pk_Package_id]);
+    }
 
 
 }

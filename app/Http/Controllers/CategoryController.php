@@ -64,6 +64,10 @@ class CategoryController extends Controller
             'data' => $packages,
         ]);
 }
+public function backToEdit($pk_Package_id)
+    {
+        return redirect()->route('packages.edit', ['id' => $pk_Package_id]);
+    }
 
 
 }
