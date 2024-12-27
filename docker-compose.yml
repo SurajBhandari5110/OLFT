@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80" # Maps Apache server to port 8080
+    volumes:
+      - .:/var/www/html
+      - ./storage:/var/www/html/storage
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_KEY=${APP_KEY}
+      - DB_HOST=127.0.0.1
+      - DB_PORT=3306
+      # - DB_USERNAME=${DB_USERNAME}
+      # - MYSQL_ALLOW_EMPTY_PASSWORD=yes 
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_DATABASE=olft
+      - MYSQL_USER=root
+      # - MYSQL_PASSWORD=
+     
+    
+
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

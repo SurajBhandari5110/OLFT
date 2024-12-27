@@ -9,6 +9,9 @@ class ContactController extends Controller
     public function showFooter()
     {
         $contactinfos = ContactInfo::all();
-        return view('layouts.footer', compact('contactinfos'));
+        return response()->json([
+            'success' => true,
+            'data' => $contactinfos,
+        ]);
     }
 }
