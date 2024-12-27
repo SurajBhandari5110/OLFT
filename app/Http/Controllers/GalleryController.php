@@ -63,13 +63,13 @@ public function deleteGalleryImage($id)
     return redirect()->back()->with('success', 'Image deleted successfully.');
 }
 // Fetch all galleries for a specific package by package_id
-public function fetchByPackageId($package_id)
+public function fetchByPackageId($packageId)
 {
     // Validate if the package exists
-    $package = Package::findOrFail($package_id);
+    $package = Package::findOrFail($packageId);
 
     // Fetch all gallery images associated with the package
-    $galleries = Gallery::where('pk_Package_id', $package_id)->get();
+    $galleries = Gallery::where('pk_Package_id', $packageId)->get();
 
     return response()->json([
         'package' => $package,

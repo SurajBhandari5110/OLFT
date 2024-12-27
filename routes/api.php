@@ -12,28 +12,53 @@ use App\Http\Controllers\ItinerariesController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ClientQueryController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+
+use App\Http\Controllers\PackageStayController;
+
+use App\Http\Controllers\StaysController;
+use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\BlogController;
 
 
-// Route to fetch packages data
-Route::get('/packages', [TourController::class, 'index']);
 
 // Optional: Test route to check API connectivity
 Route::get('/test', function () {
     return response()->json(['message' => 'API is working!']);
 });
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('client_queries/store', [ClientQueryController::class, 'store'])->name('client_queries.store');
+
+
+//packages API's
+Route::prefix('packages')->group(function () {
+
+    Route::get('/', [TourController::class, 'index']);
+    Route::get('/{id}', [PackageController::class, 'show'])->name('package.show');
+    Route::get('/country/{country}', action: [PackageController::class, 'getPackagesByCountry']);
+});
+//fetching blogs
+Route::prefix('blogs')->group(function () {
+    Route::get('/', [BlogController::class, 'fetchBlog']); // Display all blogs
+    Route::get('/{id}', [BlogController::class, 'show'])->name('blogs.show');
+});
+
+//Fetching all packages
+Route::get('/', [TourController::class, 'index']);
+
+//client form
+Route::post('client-queries/store', [ClientQueryController::class, 'store'])->name('client-queries.store');
+
+Route::get('footer', [ContactController::class, 'showFooter'])->name('footer.show');
+Route::get('tourguide-data', [TourGuideController::class, 'show'])->name('tourguides.show');
+Route::get('galleries/{packageId}', [GalleryController::class, 'fetchByPackageId']);
+Route::get('destinations/country/{country}', [DestinationController::class, 'getDestinationsByCountry'])->name('destinations.byCountry');
+
+
+//fetching by categry and tags
+Route::get('/category/{name}/', [CategoryController::class, 'fetchPackagesByCategory'])->name('categories.fetchBySlug');
+Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('tags.fetchBySlug');
+

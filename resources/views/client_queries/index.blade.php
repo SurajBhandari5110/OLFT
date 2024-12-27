@@ -5,7 +5,7 @@
     <h1 class="mb-4">Client Queries</h1>
 
     <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('client_queries.create') }}" class="btn btn-primary">Submit New Query</a>
+        <a href="{{ route('client-queries.create') }}" class="btn btn-primary">Submit New Query</a>
     </div>
 
     @if ($queries->count() > 0)
