@@ -107,6 +107,10 @@ class TourGuideController extends Controller
     public function show()
 {
     $tourguides = TourGuide::all();
-    return view('tourguides.cards', compact('tourguides'));
+   
+    return response()->json([
+        'success' => true,
+        'data' => $tourguides,
+    ]);
 }
 }
