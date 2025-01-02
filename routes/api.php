@@ -51,14 +51,19 @@ Route::get('/', [TourController::class, 'index']);
 
 //client form
 Route::post('client-queries/store', [ClientQueryController::class, 'store'])->name('client-queries.store');
-
+//footer
 Route::get('footer', [ContactController::class, 'showFooter'])->name('footer.show');
+//tourguides
 Route::get('tourguide-data', [TourGuideController::class, 'show'])->name('tourguides.show');
+//galleries
 Route::get('galleries/{packageId}', [GalleryController::class, 'fetchByPackageId']);
+//destinations
+Route::get('/destinations/show', [DestinationController::class, 'show']);
 Route::get('destinations/country/{country}', [DestinationController::class, 'getDestinationsByCountry'])->name('destinations.byCountry');
 
 
 //fetching by categry and tags
 Route::get('/category/{name}/', [CategoryController::class, 'fetchPackagesByCategory'])->name('categories.fetchBySlug');
 Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('tags.fetchBySlug');
+
 
