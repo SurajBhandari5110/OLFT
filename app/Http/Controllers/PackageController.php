@@ -87,11 +87,10 @@ return redirect()->route('packages.edit', $package->pk_Package_id)
         //     return redirect()->route('packages.index')->with('error', 'Package not found');
         // }
         //to show include and exclude:
-        if ($package) {
-            return view('packages.show', compact('package'));
-            } else {
-                return redirect()->route('packages.index')->with('error', 'Package not found');
-            }
+        return response()->json([
+            'success' => true,
+            'data' => $package,
+        ]);
         
         
     }

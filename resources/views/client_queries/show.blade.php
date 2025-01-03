@@ -24,9 +24,7 @@
                 <textarea class="form-control bg-light" rows="5" readonly>{{ $query->message }}</textarea>
             </div>
         </div>
-        <div class="card-footer text-end">
-            <a href="{{ route('client-queries.index') }}" class="btn btn-secondary">Back to Queries</a>
-        </div>
+        
     </div>
 </div>
 @endsection
