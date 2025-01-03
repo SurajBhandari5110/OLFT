@@ -78,7 +78,7 @@
             </div>
 
             <div class="form-group">
-                <label for="tour_guide">Tour Guide</label>
+                <label for="tour_guide">Number of Tour Guides</label>
                 <input type="text" name="tour_guide" class="form-control" value="{{ $package->tour_guide }}" required>
             </div>
 

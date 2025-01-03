@@ -49,7 +49,7 @@
     <label>Group Size</label><br>
     <input type="number" name="group_size" id="group_size" class="form-control" required><br>
 
-    <label>Tour Guide</label><br>
+    <label>Number of Tour Guides</label><br>
     <input type="text" name="tour_guide" id="tour_guide" class="form-control" required><br>
 
     <label>Coordinates</label><br>
