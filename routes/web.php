@@ -108,6 +108,15 @@ Route::middleware(['admin'])->group(function () {
         Route::put('/{destination}', [DestinationController::class, 'update'])->name('destinations.update');
         Route::delete('/{destination}', [DestinationController::class, 'destroy'])->name('destinations.destroy');
         });
+    // Blog Routes
+    Route::prefix('blogs')->group(function () {
+            Route::get('/', [BlogController::class, 'index'])->name('blogs.index'); // Display all blogs
+            Route::get('/create', [BlogController::class, 'create'])->name('blogs.create'); // Show form to create a new blog
+            Route::post('/store', [BlogController::class, 'store'])->name('blogs.store'); // Store a new blog
+            Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('blogs.edit'); // Show form to edit a blog
+            Route::put('/{id}', [BlogController::class, 'update'])->name('blogs.update'); // Update an existing blog
+            Route::delete('/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // Delete a blog
+            });
 
     Route::get('package_stays/{pk_Package_id}', [PackageStayController::class, 'create'])
     ->name('package_stays.create');
@@ -129,23 +138,13 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/tags/remove', [TagController::class, 'remove'])->name('tags.remove');
     Route::get('/{pk_Package_id}', [TagController::class, 'backToEdit'])->name('tags.edit');
     Route::get('/package/{pk_Package_id}/back-to-edit', [TagController::class, 'backToEdit'])->name('back.to.edit');
-    
-    // Blog Routes
-    Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index'); // Display all blogs
-    Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create'); // Show form to create a new blog
-    Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store'); // Store a new blog
-    Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blogs.edit'); // Show form to edit a blog
-    Route::put('/blogs/{id}', [BlogController::class, 'update'])->name('blogs.update'); // Update an existing blog
-    Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // Delete a blog
-    
-    
-    
+
 
     // Routes for ClientQuery
-    Route::get('client_queries', [ClientQueryController::class, 'index'])->name('client_queries.index');
-    Route::get('client_queries/create', [ClientQueryController::class, 'create'])->name('client_queries.create');
-    Route::post('client_queries/store', [ClientQueryController::class, 'store'])->name('client_queries.store');
-    Route::get('client_queries/{id}', [ClientQueryController::class, 'show'])->name('client_queries.show');
+    Route::get('client-queries', [ClientQueryController::class, 'index'])->name('client-queries.index');
+    Route::get('client-queries/create', [ClientQueryController::class, 'create'])->name('client-queries.create');
+    Route::post('client-queries/store', [ClientQueryController::class, 'store'])->name('client-queries.store');
+    Route::get('client-queries/{id}', [ClientQueryController::class, 'show'])->name('client-queries.show');
     });
 
 
@@ -165,6 +164,7 @@ Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('t
 //fetching blogs
 Route::get('/blogs_details', [BlogController::class, 'fetchBlog']); // Display all blogs
 Route::get('/blogs_details/{id}', [BlogController::class, 'show'])->name('blogs.show');
+Route::get('itineraries/{packageId}', [ItinerariesController::class, 'fetchItineraries']);
 
 
 

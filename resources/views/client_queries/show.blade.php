@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="card-footer text-end">
-            <a href="{{ route('client_queries.index') }}" class="btn btn-secondary">Back to Queries</a>
+            <a href="{{ route('client-queries.index') }}" class="btn btn-secondary">Back to Queries</a>
         </div>
     </div>
 </div>

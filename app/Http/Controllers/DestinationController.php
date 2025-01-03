@@ -115,6 +115,12 @@ class DestinationController extends Controller
         'data' => $destinations
     ]);
 }
+public function show()
+    {
+        $destinations = Destination::all();
+        //return view('destinations.index', compact('destinations'));
+        return response()->json(['success' => true,'data' => $destinations],200);
+}
 }
 
  
