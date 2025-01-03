@@ -164,7 +164,7 @@ Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('t
 //fetching blogs
 Route::get('/blogs_details', [BlogController::class, 'fetchBlog']); // Display all blogs
 Route::get('/blogs_details/{id}', [BlogController::class, 'show'])->name('blogs.show');
-Route::get('itineraries/{PackageId}', [ItinerariesController::class, 'fetchItineraries']);
+Route::get('itineraries/{packageId}', [ItinerariesController::class, 'fetchItineraries']);
 
 
 

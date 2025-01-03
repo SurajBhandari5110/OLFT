@@ -96,10 +96,10 @@ class ItinerariesController extends Controller
 
 
 
-    public function fetchItineraries($PackageId)
+    public function fetchItineraries($packageId)
     {
         // Fetch itineraries for the selected package
-        $itineraries = Itineraries::where('pk_Package_id', $PackageId)->get();
+        $itineraries = Itineraries::where('pk_Package_id', $packageId)->get();
 
         return response()->json(['itineraries' => $itineraries]);
     }
