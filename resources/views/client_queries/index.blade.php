@@ -4,9 +4,7 @@
 <div class="container mt-5">
     <h1 class="mb-4">Client Queries</h1>
 
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('client-queries.create') }}" class="btn btn-primary">Submit New Query</a>
-    </div>
+    
 
     @if ($queries->count() > 0)
         <div class="table-responsive">
@@ -14,6 +12,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
+                        <th>Package</th>
                         <th>Full Name</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -25,6 +24,7 @@
                     @foreach ($queries as $query)
                         <tr>
                             <td>{{ $query->id }}</td>
+                            <td>{{$query->package_id}}</td>
                             <td>{{ $query->fullname }}</td>
                             <td>{{ $query->email }}</td>
                             <td>{{ $query->phone }}</td>
