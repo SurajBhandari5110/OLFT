@@ -65,5 +65,5 @@ Route::get('destinations/country/{country}', [DestinationController::class, 'get
 //fetching by categry and tags
 Route::get('/category/{name}/', [CategoryController::class, 'fetchPackagesByCategory'])->name('categories.fetchBySlug');
 Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('tags.fetchBySlug');
-
-
+//itineraries
+Route::get('itineraries/{PackageId}', [ItinerariesController::class, 'fetchItineraries']);

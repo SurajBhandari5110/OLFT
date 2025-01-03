@@ -22,7 +22,7 @@ class ClientQueryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'package_id' => 'required|integer',
+            'package_id' => 'integer|nullable',
             'fullname' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:15',
@@ -30,7 +30,9 @@ class ClientQueryController extends Controller
         ]);
 
         ClientQuery::create($request->all());
-        return redirect()->route('client_queries.index')->with('success', 'Client query submitted successfully!');
+        $queries = ClientQuery::all();
+        return view('client_queries.index', compact('queries'));
+        
     }
 
     // Display a specific query
@@ -38,5 +40,15 @@ class ClientQueryController extends Controller
     {
         $query = ClientQuery::findOrFail($id);
         return view('client_queries.show', compact('query'));
+        
+    }
+    public function fetch($id)
+    {
+        $query = ClientQuery::findOrFail($id);
+       
+        return response()->json([
+            'success' => true,
+            'data' => $query,
+        ]);
     }
 }

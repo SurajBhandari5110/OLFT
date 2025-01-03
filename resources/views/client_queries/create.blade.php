@@ -2,10 +2,10 @@
 
 @section('content')
     <h1>Submit a Query</h1>
-    <form action="{{ route('client_queries.store') }}" method="POST">
+    <form action="{{ route('client-queries.store') }}" method="POST">
         @csrf
         <label for="package_id">Package ID:</label>
-        <input type="number" id="package_id" name="package_id" required>
+        <input type="number" id="package_id" name="package_id" >
         
         <label for="fullname">Full Name:</label>
         <input type="text" id="fullname" name="fullname" required>

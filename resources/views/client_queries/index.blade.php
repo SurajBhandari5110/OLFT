@@ -30,7 +30,7 @@
                             <td>{{ $query->phone }}</td>
                             <td>{{ \Illuminate\Support\Str::limit($query->message, 50) }}</td>
                             <td>
-                                <a href="{{ route('client_queries.show', $query->id) }}" class="btn btn-sm btn-info">View</a>
+                                <a href="{{ route('client-queries.show', $query->id) }}" class="btn btn-sm btn-info">View</a>
                             </td>
                         </tr>
                     @endforeach
