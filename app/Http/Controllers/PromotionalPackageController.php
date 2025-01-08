@@ -45,7 +45,7 @@ class PromotionalPackageController extends Controller
                 'pk_Package_id' => 'required|exists:packages,pk_Package_id',
             ]);
             $packageId = $validatedData['pk_Package_id'];
-            $generatedUrl = "http://13.203.104.207/promotional-packages/package{$packageId}";
+            $generatedUrl = "http://13.203.104.207/promotional-packages/{$packageId}";
 
             // Store the generated URL in the database
             PromotionalPackage::updateOrCreate(
@@ -100,7 +100,7 @@ class PromotionalPackageController extends Controller
             ]);
 
             $packageId = $validatedData['pk_Package_id'];
-            $generatedUrl = "http://13.203.104.207/promotional-packages/package{$packageId}";
+            $generatedUrl = "http://13.203.104.207/promotional-packages/{$packageId}";
 
             // Create or update the promotional package record
             PromotionalPackage::updateOrCreate(
