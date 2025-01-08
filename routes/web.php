@@ -15,8 +15,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ClientQueryController;
-
-
+use App\Http\Controllers\PromotionalPackageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -117,6 +116,20 @@ Route::middleware(['admin'])->group(function () {
             Route::put('/{id}', [BlogController::class, 'update'])->name('blogs.update'); // Update an existing blog
             Route::delete('/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // Delete a blog
             });
+    //PromotionalPackage
+// Route::prefix('/promotional-packages')->group(function () {
+    Route::get('create', [PromotionalPackageController::class, 'create'])->name('promotional-packages.create');
+    Route::post('/store', [PromotionalPackageController::class, 'store'])->name('promotional-packages.store');
+    Route::get('/', [PromotionalPackageController::class, 'index'])->name('promotional-packages.index');
+    Route::delete('/{id}', [PromotionalPackageController::class, 'destroy'])->name('promotional-packages.destroy');
+
+// });
+
+
+
+Route::get('/get-packages', [PromotionalPackageController::class, 'getPackagesByDestination']);
+Route::post('/store-generated-url', [PromotionalPackageController::class, 'storeGeneratedUrl']);
+
 
     Route::get('package_stays/{pk_Package_id}', [PackageStayController::class, 'create'])
     ->name('package_stays.create');
@@ -165,6 +178,11 @@ Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('t
 Route::get('/blogs_details', [BlogController::class, 'fetchBlog']); // Display all blogs
 Route::get('/blogs_details/{id}', [BlogController::class, 'show'])->name('blogs.show');
 Route::get('itineraries/{packageId}', [ItinerariesController::class, 'fetchItineraries']);
+
+
+
+
+
 
 
 

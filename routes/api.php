@@ -21,6 +21,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\BlogController;
 
+use App\Http\Controllers\PromotionalPackageController;
+
 
 
 // Optional: Test route to check API connectivity
@@ -67,3 +69,5 @@ Route::get('/category/{name}/', [CategoryController::class, 'fetchPackagesByCate
 Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('tags.fetchBySlug');
 //itineraries
 Route::get('itineraries/{packageId}', [ItinerariesController::class, 'fetchItineraries']);
+//fetching promotional packages:
+Route::get('/promotional-packages/{packageId}', [PromotionalPackageController::class, 'fetching_Promotional_URL']);
