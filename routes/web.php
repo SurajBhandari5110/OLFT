@@ -117,20 +117,15 @@ Route::middleware(['admin'])->group(function () {
             Route::delete('/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy'); // Delete a blog
             });
     //PromotionalPackage
-// Route::prefix('/promotional-packages')->group(function () {
+Route::prefix('/promotional-packages')->group(function () {
     Route::get('create', [PromotionalPackageController::class, 'create'])->name('promotional-packages.create');
     Route::post('/store', [PromotionalPackageController::class, 'store'])->name('promotional-packages.store');
     Route::get('/', [PromotionalPackageController::class, 'index'])->name('promotional-packages.index');
     Route::delete('/{id}', [PromotionalPackageController::class, 'destroy'])->name('promotional-packages.destroy');
+});
 
-// });
-
-
-
-Route::get('/get-packages', [PromotionalPackageController::class, 'getPackagesByDestination']);
-Route::post('/store-generated-url', [PromotionalPackageController::class, 'storeGeneratedUrl']);
-
-
+    Route::get('/get-packages', [PromotionalPackageController::class, 'getPackagesByDestination']);
+    Route::post('/store-generated-url', [PromotionalPackageController::class, 'storeGeneratedUrl']);
     Route::get('package_stays/{pk_Package_id}', [PackageStayController::class, 'create'])
     ->name('package_stays.create');
     Route::post('/package_stays/{pk_Package_id}/add', [PackageStayController::class, 'store'])
@@ -152,14 +147,12 @@ Route::post('/store-generated-url', [PromotionalPackageController::class, 'store
     Route::get('/{pk_Package_id}', [TagController::class, 'backToEdit'])->name('tags.edit');
     Route::get('/package/{pk_Package_id}/back-to-edit', [TagController::class, 'backToEdit'])->name('back.to.edit');
 
-
     // Routes for ClientQuery
     Route::get('client-queries', [ClientQueryController::class, 'index'])->name('client-queries.index');
     Route::get('client-queries/create', [ClientQueryController::class, 'create'])->name('client-queries.create');
     Route::post('client-queries/store', [ClientQueryController::class, 'store'])->name('client-queries.store');
     Route::get('client-queries/{id}', [ClientQueryController::class, 'show'])->name('client-queries.show');
     });
-
 
 //Public Routes
 Route::get('/', [TourController::class, 'index']);
@@ -178,11 +171,3 @@ Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('t
 Route::get('/blogs_details', [BlogController::class, 'fetchBlog']); // Display all blogs
 Route::get('/blogs_details/{id}', [BlogController::class, 'show'])->name('blogs.show');
 Route::get('itineraries/{packageId}', [ItinerariesController::class, 'fetchItineraries']);
-
-
-
-
-
-
-
-
