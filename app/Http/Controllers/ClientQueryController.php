@@ -31,9 +31,12 @@ class ClientQueryController extends Controller
 
         ClientQuery::create($request->all());
         $queries = ClientQuery::all();
-        return view('client_queries.index', compact('queries'));
-        
+        return response()->json([
+            'success' => true,
+            
+        ]);
     }
+    
 
     // Display a specific query
     public function show($id)
