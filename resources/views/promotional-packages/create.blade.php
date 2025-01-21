@@ -35,6 +35,15 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <!-- User inputs for generating dynamic slug -->
+                    <div class="form-group">
+                        <label for="dynamic-url" class="font-weight-bold">Create Dynamic URL:</label>
+                        <input type="text" name="dynamic-url" id="dynamic-url" class="form-control" placeholder="Ex:India/Goa" required>
+                    </div>
+
+                    
+
                     <button type="submit" class="btn btn-success btn-block mt-3">Generate URL and Store</button>
                 </form>
             @else

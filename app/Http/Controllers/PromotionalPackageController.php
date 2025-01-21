@@ -39,29 +39,34 @@ class PromotionalPackageController extends Controller
     }
 
     public function store(Request $request)
-    {
-        try {
-            $validatedData = $request->validate([
-                'pk_Package_id' => 'required|exists:packages,pk_Package_id',
-            ]);
-            $packageId = $validatedData['pk_Package_id'];
-            $generatedUrl = "http://13.203.104.207/promotional-packages/{$packageId}";
+{
+    try {
+        $validatedData = $request->validate([
+            'pk_Package_id' => 'required|exists:packages,pk_Package_id',
+            'dynamic-url' => 'required|string',
+        ]);
 
-            // Store the generated URL in the database
-            PromotionalPackage::updateOrCreate(
-                ['pk_Package_id' => $packageId],
-                ['generated_url' => $generatedUrl]
-            );
+        $packageId = $validatedData['pk_Package_id'];
+        $dynamicUrl = $validatedData['dynamic-url'];
 
-            $promotionalPackages = PromotionalPackage::all();
-            return view('promotional-packages.index', compact('promotionalPackages'));
-        } catch (Exception $e) {
-            // Handle the exception (e.g., log it, return a custom error response)
-            return response()->json(['success' => false, 'message' => 'Failed to store the promotional package.']);
-        }
+        // Construct the full promotional URL
+        $generatedUrl = "http://13.203.104.207/{$dynamicUrl}";
+
+        // Store the promotional package in the database
+        $promotionalPackage = PromotionalPackage::updateOrCreate(
+            ['pk_Package_id' => $packageId],
+            ['generated_url' => $generatedUrl]
+        );
+
+        return redirect()
+            ->route('promotional-packages.index')
+            ->with('success', 'Promotional package URL generated and stored successfully!');
+    } catch (Exception $e) {
+        // Handle the exception (e.g., log it, return a custom error response)
+        return response()->json(['success' => false, 'message' => 'Failed to store the promotional package.']);
     }
+}
 
-    // Fetch packages by selected destination (AJAX call)
     public function getPackagesByDestination(Request $request)
     {
         try {
@@ -100,7 +105,10 @@ class PromotionalPackageController extends Controller
             ]);
 
             $packageId = $validatedData['pk_Package_id'];
-            $generatedUrl = "http://13.203.104.207/promotional-packages/{$packageId}";
+            $dynamicUrl = $validatedData['dynamic-url'];
+
+            // Construct the full promotional URL
+            $generatedUrl = "http://13.203.104.207/{$dynamicUrl}";
 
             // Create or update the promotional package record
             PromotionalPackage::updateOrCreate(
@@ -118,13 +126,16 @@ class PromotionalPackageController extends Controller
         }
     }
      
-    public function fetching_Promotional_URL($packageId)
+    public function fetching_Promotional_URL()
     {
         try {
-            $package = Package::findOrFail($packageId); 
+            $promotionalPackages = PromotionalPackage::all();
+            //$package = Package::findOrFail($packageId); 
             return response()->json([
                 'success' => true,
-                'data' => $package,
+                'data' =>$promotionalPackages,
+                //'data' => $package,
+
             ]);
         } catch (Exception $e) {
             // Handle the exception (e.g., log it, return a custom error response)
