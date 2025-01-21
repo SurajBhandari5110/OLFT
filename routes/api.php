@@ -22,6 +22,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\BlogController;
 
 use App\Http\Controllers\PromotionalPackageController;
+use App\Http\Controllers\PromotionalDestinationController;
 
 
 
@@ -70,4 +71,5 @@ Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('t
 //itineraries
 Route::get('itineraries/{packageId}', [ItinerariesController::class, 'fetchItineraries']);
 //fetching promotional packages:
-Route::get('/promotional-packages/{packageId}', [PromotionalPackageController::class, 'fetching_Promotional_URL']);
+Route::get('/promotional-packages', [PromotionalPackageController::class, 'fetching_Promotional_URL']);
+Route::get('/promotional-destination', [PromotionalDestinationController::class, 'fetchGeneratedUrl']);

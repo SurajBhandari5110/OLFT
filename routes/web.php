@@ -171,3 +171,19 @@ Route::get('/tag/{tag}/', [TagController::class, 'fetchPackagesByTag'])->name('t
 Route::get('/blogs_details', [BlogController::class, 'fetchBlog']); // Display all blogs
 Route::get('/blogs_details/{id}', [BlogController::class, 'show'])->name('blogs.show');
 Route::get('itineraries/{packageId}', [ItinerariesController::class, 'fetchItineraries']);
+
+use App\Http\Controllers\PromotionalDestinationController;
+
+Route::middleware(['web'])->group(function () {
+    // List all promotional destinations
+    Route::get('/promotional-destinations', [PromotionalDestinationController::class, 'index'])->name('promotional-destinations.index');
+
+    // Show the form for creating a new promotional destination
+    Route::get('/promotional-destinations/create', [PromotionalDestinationController::class, 'create'])->name('promotional-destinations.create');
+
+    // Store a newly created promotional destination
+    Route::post('/promotional-destinations', [PromotionalDestinationController::class, 'store'])->name('promotional-destinations.store');
+
+    // Delete a promotional destination
+    Route::delete('/promotional-destinations/{id}', [PromotionalDestinationController::class, 'destroy'])->name('promotional-destinations.destroy');
+});
