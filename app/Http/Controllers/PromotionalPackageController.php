@@ -108,7 +108,7 @@ class PromotionalPackageController extends Controller
             $dynamicUrl = $validatedData['dynamic-url'];
 
             // Construct the full promotional URL
-            $generatedUrl = "http://13.203.104.207/{$dynamicUrl}";
+            $generatedUrl = "http://13.203.104.207/tour/{$dynamicUrl}";
 
             // Create or update the promotional package record
             PromotionalPackage::updateOrCreate(
