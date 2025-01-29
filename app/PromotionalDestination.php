@@ -11,6 +11,7 @@ class PromotionalDestination extends Model{
     protected $fillable = [
         'destination_id',
         'generated_url',
+        'country',
     ];
     public function destination()
     {

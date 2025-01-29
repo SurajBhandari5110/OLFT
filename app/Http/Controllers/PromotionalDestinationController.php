@@ -32,36 +32,40 @@ class PromotionalDestinationController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $destinations = Destination::all();
-        
-            $validatedData = $request->validate([
-                'destination_id' => 'required|exists:destinations,id',
-                'dynamic-url' => 'required|string',
-            ]);
+{
+    $destinations = Destination::all();
+    
+    $validatedData = $request->validate([
+        'destination_id' => 'required|exists:destinations,id',
+        'dynamic-url' => 'required|string',
+    ]);
 
-            $destinationId = $validatedData['destination_id'];
-            $dynamicUrl = $validatedData['dynamic-url'];
-            $generatedUrl = "http://3.110.115.126/destinations/{$dynamicUrl}";
+    $destinationId = $validatedData['destination_id'];
+    $dynamicUrl = $validatedData['dynamic-url'];
+    $generatedUrl = "http://3.110.115.126/destinations/{$dynamicUrl}";
 
-            // Store the promotional destination in the database
-            PromotionalDestination::updateOrCreate(
-                ['destination_id' => $destinationId],
-                ['generated_url' => $generatedUrl]
-            );
+    // Fetch country from destinations table
+    $destination = Destination::find($destinationId);
+    $country = $destination ? $destination->country : null;
 
-            
-            
+    // Store the promotional destination in the database
+    PromotionalDestination::updateOrCreate(
+        ['destination_id' => $destinationId],
+        [
+            'generated_url' => $generatedUrl,
+            'country' => $country, 
+        ]
+    );
 
-            try {
-                $promotionalDestinations = PromotionalDestination::all();
-                return view('promotional-destinations.index', compact('destinations','promotionalDestinations'))->with('success', 'Promotional destination URL generated and stored successfully!');
-            } catch (Exception $e) {
-                return response()->json(['success' => false, 'message' => 'Failed to fetch promotional destinations.']);
-            }
-        
-       
+    try {
+        $promotionalDestinations = PromotionalDestination::all();
+        return view('promotional-destinations.index', compact('destinations', 'promotionalDestinations'))
+            ->with('success', 'Promotional destination URL generated and stored successfully!');
+    } catch (Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Failed to fetch promotional destinations.']);
     }
+}
+
 
     public function destroy($id)
     {
