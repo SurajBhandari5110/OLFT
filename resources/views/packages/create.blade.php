@@ -34,7 +34,7 @@
     @foreach($countries as $country)
         <option value="{{ $country->name }}">{{ $country->name }}</option>
     @endforeach
-    </select>
+    </select><br>
     
 
     <label>State</label><br>
@@ -43,8 +43,15 @@
     <label>Duration</label><br>
     <input type="number" name="duration" id="duration" class="form-control" required><br>
 
+
     <label>Tour Type</label><br>
-    <input type="text" name="tour_type" id="tour_type" class="form-control" required><br>
+    <select name="tour_type" id="tour_type" class="form-control" required>
+    <option value="Adventure">Adventure</option>
+    <option value="City Tour">City Tour</option>
+    <option value="Couple">Couple</option>
+    <option value="Escorted Tour">Escorted Tour</option>
+    <option value="Family">Family</option>
+    <option value="Hill Town">Hill Town</option></select><br>
 
     <label>Group Size</label><br>
     <input type="number" name="group_size" id="group_size" class="form-control" required><br>

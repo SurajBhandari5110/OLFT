@@ -50,7 +50,7 @@ class PromotionalPackageController extends Controller
         $dynamicUrl = $validatedData['dynamic-url'];
 
         // Construct the full promotional URL
-        $generatedUrl = "http://3.110.115.126/package/{$dynamicUrl}";
+        $generatedUrl = "http://13.203.186.15/package/{$dynamicUrl}";
 
         // Store the promotional package in the database
         $promotionalPackage = PromotionalPackage::updateOrCreate(
@@ -108,7 +108,7 @@ class PromotionalPackageController extends Controller
             $dynamicUrl = $validatedData['dynamic-url'];
 
             // Construct the full promotional URL
-            $generatedUrl = "http://3.110.115.126/package/{$dynamicUrl}";
+            $generatedUrl = "http://13.203.186.15/package/{$dynamicUrl}";
 
             // Create or update the promotional package record
             PromotionalPackage::updateOrCreate(

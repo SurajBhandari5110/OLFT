@@ -68,8 +68,14 @@
             </div>
 
             <div class="form-group">
-                <label for="tour_type">Tour Type</label>
-                <input type="text" name="tour_type" class="form-control" value="{{ $package->tour_type }}" required>
+            <label>Tour Type</label><br>
+            <select name="tour_type" id="tour_type" class="form-control" required>
+            <option value="Adventure">Adventure</option>
+            <option value="City Tour">City Tour</option>
+            <option value="Couple">Couple</option>
+            <option value="Escorted Tour">Escorted Tour</option>
+            <option value="Family">Family</option>
+            <option value="Hill Town">Hill Town</option></select>
             </div>
 
             <div class="form-group">

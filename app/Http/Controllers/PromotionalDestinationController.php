@@ -42,7 +42,7 @@ class PromotionalDestinationController extends Controller
 
     $destinationId = $validatedData['destination_id'];
     $dynamicUrl = $validatedData['dynamic-url'];
-    $generatedUrl = "http://3.110.115.126/destinations/{$dynamicUrl}";
+    $generatedUrl = "http://13.203.186.15/destinations/{$dynamicUrl}";
 
     // Fetch country from destinations table
     $destination = Destination::find($destinationId);
