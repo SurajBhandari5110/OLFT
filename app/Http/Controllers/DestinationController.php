@@ -46,8 +46,10 @@ class DestinationController extends Controller
             $path = Storage::disk('s3')->putFileAs('destination', $file, $fileName);
             $requestData['image'] = Storage::disk('s3')->url($path);
         }
+        
 
-        Destination::create($requestData);
+        $destination=Destination::create($requestData);
+        $destination->updateTotalPackages();
         $destinations = Destination::all();
 
         
@@ -101,6 +103,7 @@ class DestinationController extends Controller
         }
 
         $destination->update($requestData);
+        $destination->updateTotalPackages();
 
         return redirect()->route('destinations.index')->with('success', 'Destination updated successfully!');
     }

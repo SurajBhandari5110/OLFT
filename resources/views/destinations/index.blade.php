@@ -28,6 +28,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Country</th>
+                        <th>Total Packages</th>
                         <th>Image</th>
                         <th>About</th>
                         <th>Attraction</th>
@@ -40,6 +41,7 @@
                         <tr>
                             <td>{{ $destination->id }}</td>
                             <td>{{ $destination->country }}</td>
+                            <td> {{ $destination->total_packages }}</td>
                             <td>
                                 @if ($destination->image)
                                     <img src="{{ $destination->image }}" alt="{{ $destination->country }}" class="rounded" style="width: 100px; height: auto;">

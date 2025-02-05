@@ -19,9 +19,15 @@ class Destination extends Model
         'about',
         'attraction',
         'coordinates',
+        'total_packages'
     ];
     public function country()
     {
         return $this->belongsTo(Country::class, 'name');
+    }
+    public function updateTotalPackages()
+    {
+        $this->total_packages = Package::where('country', $this->country)->count();
+        $this->save();
     }
 }
