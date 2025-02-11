@@ -48,7 +48,8 @@ class BlogController extends Controller
 
     public function blogsAPI()
     {
-        return response()->json(Blog::latest()->get());
+        $blogs = Blog::all();
+        return response()->json(['success' => true,'data' => $blogs],200);
     }
     public function show($id)
     {
@@ -57,8 +58,9 @@ class BlogController extends Controller
         if (!$blog) {
             return response()->json(['message' => 'Blog not found'], 404);
         }
+        return response()->json(['success' => true,'data' => $blog],200);
+        
 
-        return response()->json($blog);
     }
 
     // Handle Image Upload to S3
