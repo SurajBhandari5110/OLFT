@@ -5,34 +5,23 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Blog extends Model
 {
     use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
+    // Define table name (if not following Laravel's naming convention)
     protected $table = 'blogs';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Define primary key
+    protected $primaryKey = 'blog_id';
+
+    // Enable mass assignment for these fields
     protected $fillable = [
         'title',
-        'by_user',
-        'comment',
-        'primary_image',
-        'secondary_image',
-        'moto1',
-        'para1',
-        'para2',
-        'moto2',
-       
+        'content', // HTML content (includes Quill editor images)
+        'slug',    // SEO-friendly URL
+        'by_user', // User who created the blog
     ];
 
-    
 }

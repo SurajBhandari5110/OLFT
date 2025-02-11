@@ -14,147 +14,66 @@ class BlogController extends Controller
         $blogs = Blog::all();
         return view('blogs.index', compact('blogs'));
     }
-
-    // Show form to create a new blog
     public function create()
     {
         return view('blogs.create');
     }
 
-    // Store a new blog in the database
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'by_user' => 'required|string|max:255',
-            'comment' => 'nullable|string',
-            'primary_image' => 'required|image|max:2048',
-            'secondary_image' => 'nullable|image|max:2048',
-            'moto1' => 'nullable|string',
-            'para1' => 'nullable|string',
-            'moto2' => 'nullable|string',
+            'title' => 'required|unique:blogs,title',
+            'content' => 'required',
+            'slug' => 'required|unique:blogs,slug',
+            'by_user'=>'required',
+        
         ]);
 
-        $requestData = $request->except(['primary_image', 'secondary_image']);
-
-        // Process and store the primary image
-        if ($request->hasFile('primary_image')) {
-            $primaryFile = $request->file('primary_image');
-            $primaryFileName = time() . '_primary_' . $primaryFile->getClientOriginalName();
-            $primaryPath = Storage::disk('s3')->putFileAs('blogs', $primaryFile, $primaryFileName);
-            $requestData['primary_image'] = Storage::disk('s3')->url($primaryPath);
-        }
-
-        // Process and store the secondary image
-        if ($request->hasFile('secondary_image')) {
-            $secondaryFile = $request->file('secondary_image');
-            $secondaryFileName = time() . '_secondary_' . $secondaryFile->getClientOriginalName();
-            $secondaryPath = Storage::disk('s3')->putFileAs('blogs', $secondaryFile, $secondaryFileName);
-            $requestData['secondary_image'] = Storage::disk('s3')->url($secondaryPath);
-        }
-
-        Blog::create($requestData);
+        Blog::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'slug' => $request->slug,
+            'by_user'=>$request->by_user,
+        ]);
 
         return redirect()->route('blogs.index')->with('success', 'Blog created successfully!');
     }
 
-    // Show form to edit an existing blog
-    public function edit($id)
+
+    public function destroy(Blog $blog)
     {
-        $blog = Blog::findOrFail($id);
-        return view('blogs.edit', compact('blog'));
-    }
-
-    // Update an existing blog in the database
-    public function update(Request $request, $id)
-    {
-        $blog = Blog::findOrFail($id);
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'by_user' => 'required|string|max:255',
-            'comment' => 'nullable|string',
-            'primary_image' => 'nullable|image|max:2048',
-            'secondary_image' => 'nullable|image|max:2048',
-            'moto1' => 'nullable|string',
-            'para1' => 'nullable|string',
-            'para2' => 'nullable|string',
-            'moto2' => 'nullable|string',
-        ]);
-
-        $requestData = $request->except(['primary_image', 'secondary_image']);
-
-        // Process and update the primary image
-        if ($request->hasFile('primary_image')) {
-            if ($blog->primary_image) {
-                Storage::disk('s3')->delete(parse_url($blog->primary_image, PHP_URL_PATH));
-            }
-
-            $primaryFile = $request->file('primary_image');
-            $primaryFileName = time() . '_primary_' . $primaryFile->getClientOriginalName();
-            $primaryPath = Storage::disk('s3')->putFileAs('blogs', $primaryFile, $primaryFileName);
-            $requestData['primary_image'] = Storage::disk('s3')->url($primaryPath);
-        }
-
-        // Process and update the secondary image
-        if ($request->hasFile('secondary_image')) {
-            if ($blog->secondary_image) {
-                Storage::disk('s3')->delete(parse_url($blog->secondary_image, PHP_URL_PATH));
-            }
-
-            $secondaryFile = $request->file('secondary_image');
-            $secondaryFileName = time() . '_secondary_' . $secondaryFile->getClientOriginalName();
-            $secondaryPath = Storage::disk('s3')->putFileAs('blogs', $secondaryFile, $secondaryFileName);
-            $requestData['secondary_image'] = Storage::disk('s3')->url($secondaryPath);
-        }
-
-        $blog->update($requestData);
-
-        return redirect()->route('blogs.index')->with('success', 'Blog updated successfully!');
-    }
-
-    // Delete an existing blog
-    public function destroy($id)
-    {
-        $blog = Blog::findOrFail($id);
-
-        if ($blog->primary_image) {
-            Storage::disk('s3')->delete(parse_url($blog->primary_image, PHP_URL_PATH));
-        }
-
-        if ($blog->secondary_image) {
-            Storage::disk('s3')->delete(parse_url($blog->secondary_image, PHP_URL_PATH));
-        }
-
         $blog->delete();
-
         return redirect()->route('blogs.index')->with('success', 'Blog deleted successfully!');
     }
 
-    public function fetchBlog()
-{
-    // Fetch all blogs from the database
-    $blogs = Blog::all();
+    public function blogsAPI()
+    {
+        return response()->json(Blog::latest()->get());
+    }
+    public function show($id)
+    {
+        $blog = Blog::find($id);
 
-    // Return the blogs to a view
-    //return view('blogs.index', compact('blogs'));
-    return response()->json([
-        'success' => true,
-        'data' => $blogs,
-    ]);
+        if (!$blog) {
+            return response()->json(['message' => 'Blog not found'], 404);
+        }
+
+        return response()->json($blog);
+    }
+
+    // Handle Image Upload to S3
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $file = $request->file('image');
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $path = $file->storeAs('blogs', $fileName, 's3');
+        $url = Storage::disk('s3')->url($path);
+
+        return response()->json(['url' => $url]);
+    }
 }
-public function show($id)
-{
-    // Find the blog by ID or throw a 404 error if not found
-    $blog = Blog::findOrFail($id);
 
-    // Return the blog data to a view
-    //return view('blogs.show', compact('blog'));
-    return response()->json([
-        'success' => true,
-        'data' => $blog,
-    ]);
-}
-
-
-}

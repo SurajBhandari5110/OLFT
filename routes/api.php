@@ -44,8 +44,8 @@ Route::prefix('packages')->group(function () {
     Route::get('/country/{country}', action: [PackageController::class, 'getPackagesByCountry']);
 });
 //fetching blogs
-Route::prefix('blogs')->group(function () {
-    Route::get('/', [BlogController::class, 'fetchBlog']); // Display all blogs
+Route::prefix('blogsAPI')->group(function () {
+    Route::get('/', [BlogController::class, 'blogsAPI']);
     Route::get('/{id}', [BlogController::class, 'show'])->name('blogs.show');
 });
 

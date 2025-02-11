@@ -187,3 +187,10 @@ Route::middleware(['web'])->group(function () {
     // Delete a promotional destination
     Route::delete('/promotional-destinations/{id}', [PromotionalDestinationController::class, 'destroy'])->name('promotional-destinations.destroy');
 });
+
+
+Route::resource('/blogs', BlogController::class);
+Route::post('/blogs/upload-image', [BlogController::class, 'uploadImage'])->name('blogs.uploadImage');
+
+
+
