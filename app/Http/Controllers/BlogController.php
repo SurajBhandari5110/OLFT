@@ -26,7 +26,7 @@ class BlogController extends Controller
         'title' => 'required|string|max:255',
         'slug' => 'required|unique:blogs,slug|regex:/^[a-z0-9-]+$/',
         'by_user' => 'required',
-        'front_image' => 'required|image|max:500',
+        'front_image' => 'required|image',
         'content' => 'required'
     ]);
 
@@ -38,9 +38,10 @@ class BlogController extends Controller
     if ($request->hasFile('front_image')) {
         $file = $request->file('front_image');
         $filename = time() . '-' . $file->getClientOriginalName();
-        $path = $file->storeAs('public/blogs', $filename);
-        $blog->front_image = 'storage/blogs/' . $filename;
+        $path = Storage::disk('s3')->putFileAs('blogs', $file, $filename);
+        $blog->front_image = Storage::disk('s3')->url($path);
     }
+    
 
     $blog->content = $request->content;
     $blog->save();
