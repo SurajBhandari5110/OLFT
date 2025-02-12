@@ -15,7 +15,8 @@
         </div>
     @endif
 
-    <form action="{{ route('blogs.store') }}" method="POST">
+    <form action="{{ route('blogs.store') }}" method="POST" enctype="multipart/form-data">
+
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
@@ -32,8 +33,9 @@
             <input type="text" name="by_user" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label for="front_image" class="form-label">Front image of this blog</label>
-            <input type="file" name="front_image" id="front_image" class="form-control" required>
+            <label for="front_image">Front image of this blog</label>
+            <input type="file" name="front_image" id="front_image" class="form-control" required accept="image/*">
+            <label for="image" style="font-size:12px; color:red;">Image size must be 500KB or less!</label>
         </div>
 
         <div class="mb-3">
@@ -42,7 +44,7 @@
             <input type="hidden" name="content" id="content">
         </div>
 
-        <button type="submit" class="btn btn-success">{{ isset($blog) ? 'Update' : 'Create' }} Blog</button>
+        <button type="submit" class="btn btn-success">Blog</button>
     </form>
 </div>
 

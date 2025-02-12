@@ -31,23 +31,22 @@ class BlogController extends Controller
         
         ]);
         // Process and store the primary image
-    $requestData = $request->except('front_image'); // Get all data except image
-    
-    // Process and store the image if uploaded
-    if ($request->hasFile('front_image')) {
-        $file = $request->file('front_image');
-        $sanitizedTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', $request->input('title'));
-        $fileName = $sanitizedTitle . '.' . $file->getClientOriginalExtension();
+        $requestData = $request->except('front_image');
 
-        // Store image in S3 and get the URL
-        $path = Storage::disk('s3')->putFileAs('packages', $file, $fileName);
-        $requestData['front_image'] = Storage::disk('s3')->url($path);
-    }
+        // Process and store the primary image
+        if ($request->hasFile('front_image')) {
+            $primaryFile = $request->file('front_image');
+            $primaryFileName = time() . '_primary_' . $primaryFile->getClientOriginalName();
+            $primaryPath = Storage::disk('s3')->putFileAs('blogs', $primaryFile, $primaryFileName);
+            $requestData['front_image'] = Storage::disk('s3')->url($primaryPath);
+        }
 
    
 
     // Redirect with success message
-    $requestData = Blog::create($requestData); 
+    Blog::create($requestData); 
+
+
 
         return redirect()->route('blogs.index')->with('success', 'Blog created successfully!');
     }
