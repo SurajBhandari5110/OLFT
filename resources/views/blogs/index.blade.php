@@ -17,7 +17,7 @@
             @foreach($blogs as $blog)
                 <tr>
                     <td>{{ $blog->title }}</td>
-                    <td><img src="{{ $blog->front_image }}"  class="rounded" style="width: 100px; height: auto;"></td>
+                    <td><img src="{{ $blog->front_image }}"  class="rounded" style="width: 200px; height: auto;"></td>
                     <td>{{ $blog->slug }}</td>
                     
                     <td>

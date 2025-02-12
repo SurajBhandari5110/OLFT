@@ -52,11 +52,20 @@ class BlogController extends Controller
     }
 
 
-    public function destroy(Blog $blog)
-    {
-        $blog->delete();
-        return redirect()->route('blogs.index')->with('success', 'Blog deleted successfully!');
+    public function destroy($id)
+{
+    $blog = Blog::findOrFail($id);
+
+    // Delete image from S3 if stored
+    if ($blog->front_image) {
+        Storage::disk('s3')->delete(parse_url($blog->front_image, PHP_URL_PATH));
     }
+
+    $blog->delete();
+
+    return redirect()->route('blogs.index')->with('success', 'Blog deleted successfully!');
+}
+
 
     public function blogsAPI()
     {
