@@ -31,6 +31,10 @@
             <label for="by_user" class="form-label">Author (User ID)</label>
             <input type="text" name="by_user" class="form-control" required>
         </div>
+        <div class="mb-3">
+            <label for="front_image" class="form-label">Front image of this blog</label>
+            <input type="file" name="front_image" id="front_image" class="form-control" required>
+        </div>
 
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>

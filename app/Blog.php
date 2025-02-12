@@ -22,6 +22,7 @@ class Blog extends Model
         'content', // HTML content (includes Quill editor images)
         'slug',    // SEO-friendly URL
         'by_user', // User who created the blog
+        'front_image'//front image which will shown on blogs
     ];
 
 }

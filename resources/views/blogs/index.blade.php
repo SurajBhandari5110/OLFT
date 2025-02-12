@@ -8,6 +8,7 @@
         <thead>
             <tr>
                 <th>Title</th>
+                <th>Front Image</th>
                 <th>Slug</th>
                 <th>Actions</th>
             </tr>
@@ -16,7 +17,9 @@
             @foreach($blogs as $blog)
                 <tr>
                     <td>{{ $blog->title }}</td>
+                    <td><img src="{{ $blog->front_image }}"  class="rounded" style="width: 100px; height: auto;"></td>
                     <td>{{ $blog->slug }}</td>
+                    
                     <td>
                         <form action="{{ route('blogs.destroy', $blog->blog_id) }}" method="POST" style="display: inline;">
                             @csrf @method('DELETE')
