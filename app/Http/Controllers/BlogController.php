@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
@@ -20,37 +21,39 @@ class BlogController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|unique:blogs,title',
-            'content' => 'required',
-            'slug' => 'required|unique:blogs,slug',
-            'front_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'by_user'=>'required',
-            
-        
-        ]);
-        // Process and store the primary image
-        $requestData = $request->except('front_image');
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'slug' => 'required|unique:blogs,slug|regex:/^[a-z0-9-]+$/',
+        'by_user' => 'required',
+        'front_image' => 'required|image|max:500',
+        'content' => 'required'
+    ]);
 
-        // Process and store the primary image
-        if ($request->hasFile('front_image')) {
-            $primaryFile = $request->file('front_image');
-            $primaryFileName = time() . '_primary_' . $primaryFile->getClientOriginalName();
-            $primaryPath = Storage::disk('s3')->putFileAs('blogs', $primaryFile, $primaryFileName);
-            $requestData['front_image'] = Storage::disk('s3')->url($primaryPath);
-        }
+    $blog = new Blog();
+    $blog->title = $request->title;
+    $blog->slug = Str::slug($request->slug);
+    $blog->by_user = $request->by_user;
 
-   
-
-    // Redirect with success message
-    Blog::create($requestData); 
-
-
-
-        return redirect()->route('blogs.index')->with('success', 'Blog created successfully!');
+    if ($request->hasFile('front_image')) {
+        $file = $request->file('front_image');
+        $filename = time() . '-' . $file->getClientOriginalName();
+        $path = $file->storeAs('public/blogs', $filename);
+        $blog->front_image = 'storage/blogs/' . $filename;
     }
 
+    $blog->content = $request->content;
+    $blog->save();
+
+    return redirect()->route('blogs.index')->with('success', 'Blog created successfully.');
+}
+
+// Check slug availability (AJAX)
+public function checkSlug(Request $request)
+{
+    $exists = Blog::where('slug', $request->slug)->exists();
+    return response()->json(['available' => !$exists]);
+}
 
     public function destroy($id)
 {

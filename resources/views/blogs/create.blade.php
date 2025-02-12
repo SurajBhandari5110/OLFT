@@ -16,24 +16,25 @@
     @endif
 
     <form action="{{ route('blogs.store') }}" method="POST" enctype="multipart/form-data">
-
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" name="title" class="form-control" required>
+            <input type="text" name="title" id="title" class="form-control" required onkeyup="generateSlug()">
         </div>
 
         <div class="mb-3">
             <label for="slug" class="form-label">Slug</label>
-            <input type="text" name="slug" class="form-control" required>
+            <input type="text" name="slug" id="slug" class="form-control" required>
+            <small id="slug-error" class="text-danger"></small>
         </div>
 
         <div class="mb-3">
             <label for="by_user" class="form-label">Author (User ID)</label>
             <input type="text" name="by_user" class="form-control" required>
         </div>
+
         <div class="mb-3">
-            <label for="front_image">Front image of this blog</label>
+            <label for="front_image">Front Image</label>
             <input type="file" name="front_image" id="front_image" class="form-control" required accept="image/*">
             <label for="image" style="font-size:12px; color:red;">Image size must be 500KB or less!</label>
         </div>
@@ -44,11 +45,11 @@
             <input type="hidden" name="content" id="content">
         </div>
 
-        <button type="submit" class="btn btn-success">Blog</button>
+        <button type="submit" class="btn btn-success">Submit Blog</button>
     </form>
 </div>
 
-<!-- Quill JS & Styles -->
+<!-- Quill JS -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
@@ -67,35 +68,33 @@
         }
     });
 
-    // Handle Image Upload
-    quill.getModule('toolbar').addHandler('image', function() {
-        var input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.click();
+    function generateSlug() {
+        let title = document.getElementById('title').value;
+        let slug = title.toLowerCase().trim()
+                        .replace(/[^a-z0-9\s-]/g, '')  // Remove special characters except spaces and hyphens
+                        .replace(/\s+/g, '-')          // Convert spaces to dashes
+                        .replace(/-+/g, '-');          // Remove duplicate dashes
+        
+        document.getElementById('slug').value = slug;
+        checkSlugAvailability(slug);
+    }
 
-        input.onchange = function() {
-            var file = input.files[0];
-            var formData = new FormData();
-            formData.append('image', file);
+    function checkSlugAvailability(slug) {
+        if (!slug.match(/^[a-z0-9-]+$/)) {
+            document.getElementById('slug-error').textContent = "Slug can only contain lowercase letters, numbers, and dashes (-).";
+            return;
+        }
 
-            fetch("{{ route('blogs.uploadImage') }}", {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
+        fetch("{{ route('blogs.checkSlug') }}?slug=" + slug)
             .then(response => response.json())
             .then(data => {
-                if (data.url) {
-                    let range = quill.getSelection();
-                    quill.insertEmbed(range.index, 'image', data.url);
+                if (!data.available) {
+                    document.getElementById('slug-error').textContent = "This slug is already taken.";
+                } else {
+                    document.getElementById('slug-error').textContent = "";
                 }
-            })
-            .catch(error => console.error(error));
-        };
-    });
+            });
+    }
 
     document.querySelector('form').onsubmit = function() {
         document.querySelector("#content").value = quill.root.innerHTML;

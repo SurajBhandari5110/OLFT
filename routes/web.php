@@ -192,6 +192,7 @@ Route::middleware(['web'])->group(function () {
 Route::resource('/blogs', BlogController::class);
 Route::post('/blogs/upload-image', [BlogController::class, 'uploadImage'])->name('blogs.uploadImage');
 Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy');
+Route::get('/check-slug', [BlogController::class, 'checkSlug'])->name('blogs.checkSlug');
 
 
 
