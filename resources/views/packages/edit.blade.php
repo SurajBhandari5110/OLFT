@@ -49,7 +49,7 @@
             <div class="form-group">
             <label for="country">Country</label>
     <select name="country" id="country" class="form-control" required>
-    <option value="" disabled selected>Select a Country</option>
+    <option value="" >{{ $package->country }}</option>
     @foreach($countries as $country)
         <option value="{{ $country->name }}">{{ $country->name }}</option>
     @endforeach
