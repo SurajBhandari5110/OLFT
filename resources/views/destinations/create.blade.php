@@ -37,27 +37,20 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="about">About</label>
-            
-            <textarea name="about" id="about" placeholder="Write about place under 500 words" class="form-control" rows="6" required oninput="checkWordLimit()"></textarea><br>
-     <!-- Word Count Display -->
-     <p><strong>Word Count:</strong> <span id="word_count">0</span>/500</p>
-
+            <label for="about">About</label>         
+            <textarea name="about" id="about" placeholder="Write about the Destination" class="form-control" rows="6" required ></textarea><br>
+        </div>
+        <div class="form-group">
+            <label for="attraction">Attraction</label>
+            <textarea name="attraction" id="attraction" class="form-control" placeholder="Which Place Attract Tourist To This Country" oninput="checkCharLimit()"></textarea>
+             <!-- Word Count Display -->
+     <p><strong>Characters Count:</strong> <span id="char_count">0</span>/500</p>
 <!-- Error Message -->
 <p style="color:red;" id="error_message" class="error-message"></p>
         </div>
         <div class="form-group">
-            <label for="attraction">Attraction</label>
-            <textarea name="attraction" id="attraction" class="form-control" placeholder="Which Place Attract Tourist To This Country" oninput="checkWordLimit1()"></textarea>
-             <!-- Word Count Display -->
-     <p><strong>Word Count:</strong> <span id="word_count1">0</span>/500</p>
-
-<!-- Error Message -->
-<p style="color:red;" id="error_message1" class="error-message"></p>
-        </div>
-        <div class="form-group">
             <label for="coordinates">Location</label>
-            <input type="text" name="coordinates" id="coordinates" class="form-control">
+            <input type="text" name="coordinates" id="coordinates" placeholder="Add Google Map Link of the place" class="form-control">
         </div>
         <button type="submit" class="btn btn-success">Save</button>
     </form>
@@ -174,30 +167,30 @@
             } else {
                 errorMessage.innerText = ""; // Clear error if within limit
             }
+        }               
+    //Checkword count for Attraction:
+        
+    function checkCharLimit() {
+        let inputField = document.getElementById("attraction");
+        let charCountDisplay = document.getElementById("char_count");
+        let errorMessage = document.getElementById("error_message");
+
+        // Get input text and character count
+        let charCount = inputField.value.length;
+
+        // Update character count display
+        charCountDisplay.innerText = charCount;
+
+        // Check if character limit exceeded
+        if (charCount > 500) {
+            errorMessage.innerText = "500 characters exceeded!";
+            inputField.value = inputField.value.substring(0, 500); // Trim extra characters
+            charCountDisplay.innerText = 500; // Lock character count at 500
+        } else {
+            errorMessage.innerText = ""; // Clear error if within limit
         }
-        //Checkword count for Attraction:
-        //Checkword counts on About Package:
-    function checkWordLimit1() {
-            let inputField = document.getElementById("attraction");
-            let wordCountDisplay = document.getElementById("word_count1");
-            let errorMessage = document.getElementById("error_message1");
-
-            // Get input text and split it into words
-            let words = inputField.value.trim().split(/\s+/);
-            let wordCount = words.length;
-
-            // Update word count display
-            wordCountDisplay.innerText = wordCount;
-
-            // Check if word limit exceeded
-            if (wordCount > 500) {
-                errorMessage.innerText = "500 words exceeded!";
-                inputField.value = words.slice(0, 500).join(" "); // Trim extra words
-                wordCountDisplay.innerText = 500; // Lock word count at 500
-            } else {
-                errorMessage.innerText = ""; // Clear error if within limit
-            }
         }
+
 </script>
 </body>
 </html>

@@ -36,15 +36,22 @@
         <div class="form-group">
             <label for="about">About</label>
             <textarea name="about" id="about" class="form-control">{{ $destination->about }}</textarea>
+           
+
+<!-- Error Message -->
+<p style="color:red;" id="error_message" class="error-message"></p>
         </div>
         <div class="form-group">
             <label for="attraction">Attraction</label>
-            <textarea name="attraction" id="attraction" class="form-control">{{ $destination->attraction }}</textarea>
+            <textarea name="attraction" id="attraction" class="form-control" oninput="checkCharLimit()">{{ $destination->attraction }}</textarea>
+        <!-- Word Count Display -->
+        <p><strong>Characters Count:</strong> <span id="char_count">0</span>/500</p>
+        <!-- Error Message -->
+        <p style="color:red;" id="error_message" class="error-message"></p>
         </div>
         <div class="form-group">
-            <label for="coordinates">Coordinates</label>
+            <label for="coordinates">Location</label>
             <input type="text" name="coordinates" id="coordinates" class="form-control" value="{{ $destination->coordinates }}">
-        </div>
         <button type="submit" class="btn btn-success">Update</button>
     </form>
 </div>
@@ -135,5 +142,28 @@
 
     // Attach validation to the form submission
     document.querySelector('form').addEventListener('submit', validateImageSize);
+    
+    //Checkword count for Attraction:
+        
+    function checkCharLimit() {
+        let inputField = document.getElementById("attraction");
+        let charCountDisplay = document.getElementById("char_count");
+        let errorMessage = document.getElementById("error_message");
+
+        // Get input text and character count
+        let charCount = inputField.value.length;
+
+        // Update character count display
+        charCountDisplay.innerText = charCount;
+
+        // Check if character limit exceeded
+        if (charCount > 500) {
+            errorMessage.innerText = "500 characters exceeded!";
+            inputField.value = inputField.value.substring(0, 500); // Trim extra characters
+            charCountDisplay.innerText = 500; // Lock character count at 500
+        } else {
+            errorMessage.innerText = ""; // Clear error if within limit
+        }
+        }
 </script>
 @endsection

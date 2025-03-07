@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends('layouts.app')
 
 @section('content')
 <div class="container mt-5">
@@ -9,14 +9,7 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
+   
 
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
@@ -41,10 +34,10 @@
                         <tr>
                             <td>{{ $destination->id }}</td>
                             <td>{{ $destination->country }}</td>
-                            <td> {{ $destination->total_packages }}</td>
+                            <td>{{ $destination->total_packages }}</td>
                             <td>
                                 @if ($destination->image)
-                                    <img src="{{ $destination->image }}" alt="{{ $destination->country }}" class="rounded" style="width: 100px; height: auto;">
+                                    <img src="{{ asset($destination->image) }}" alt="{{ $destination->country }}" class="rounded" style="width: 100px; height: auto;">
                                 @endif
                             </td>
                             <td>{{ Str::limit($destination->about, 50) }}</td>
@@ -57,7 +50,7 @@
                                 <form action="{{ route('destinations.destroy', $destination->id) }}" method="POST" style="display: inline-block;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this destination?')">
+                                    <button type="submit" class="btn btn-danger btn-sm delete-button">
                                         <i class="fas fa-trash-alt"></i> Delete
                                     </button>
                                 </form>
@@ -65,7 +58,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-muted">No destinations available.</td>
+                            <td colspan="8" class="text-center text-muted">No destinations available.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -74,9 +67,20 @@
     </div>
 </div>
 
-<!-- Include Font Awesome for icons -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-<!-- Include Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- FontAwesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Bootstrap and jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $('.delete-button').on('click', function (e) {
+            if (!confirm('Are you sure you want to delete this destination?')) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
 @endsection
