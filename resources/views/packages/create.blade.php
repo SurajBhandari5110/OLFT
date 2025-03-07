@@ -22,10 +22,15 @@
     {!! csrf_field() !!}
 
     <label>Title</label><br>
-    <input type="text" name="title" id="title" class="form-control" required><br>
+    <input type="text" name="title" id="title" placeholder="Example: Abmber Palce" class="form-control" required><br>
 
     <label>About Place</label><br>
-    <input type="text" name="about" id="about" class="form-control" required><br>
+    <textarea name="about" id="about" placeholder="Write about place under 500 words" class="form-control" rows="6" required oninput="checkWordLimit()"></textarea><br>
+     <!-- Word Count Display -->
+     <p><strong>Word Count:</strong> <span id="word_count">0</span>/500</p>
+
+<!-- Error Message -->
+<p style="color:red;" id="error_message" class="error-message"></p>
 
     
     <label for="country">Country</label>
@@ -38,10 +43,11 @@
     
 
     <label>State</label><br>
-    <input type="text" name="state" id="state" class="form-control" required><br>
+    <input type="text" name="state" id="state" class="form-control" placeholder="Example: Uttarakhand" required><br>
     
     <label>Duration</label><br>
-    <input type="number" name="duration" id="duration" class="form-control" required><br>
+    <input type="number" name="duration" id="duration" class="form-control" placeholder="Enter number of days" required oninput="calculateDuration()"><br><!-- Display Result -->
+    <p><strong>Total Duration:</strong> <span id="total_duration"></span></p>
 
 
     <label>Tour Type</label><br>
@@ -54,16 +60,20 @@
     <option value="Hill Town">Hill Town</option></select><br>
 
     <label>Group Size</label><br>
-    <input type="number" name="group_size" id="group_size" class="form-control" required><br>
+    <input type="number" name="group_size" id="group_size" class="form-control" placeholder="Number of People" required><br>
 
-    <label>Number of Tour Guides</label><br>
-    <input type="text" name="tour_guide" id="tour_guide" class="form-control" required><br>
+    <label>Captains</label><br>
+    <input type="number" name="tour_guide" id="tour_guide" class="form-control" placeholder="Number of Tour-Guides" required><br>
 
-    <label>Coordinates</label><br>
-    <input type="text" name="coordinates" id="coordinates" class="form-control"><br>
+    <label>Location</label><br>
+    <input type="text" name="coordinates" id="coordinates" placeholder="Add Google Map Link of the place" class="form-control"><br>
 
     <label>Travel With Bus</label><br>
-    <input type="text" name="travel_with_bus" id="travel_with_bus" class="form-control"><br>
+    <select name="travel_with_bus" id="travel_with_bus" placeholder="Yes or No"
+    class="form-control" required>
+    <option value="Yes">Yes</option>
+    <option value="No">No</option></select><br>
+
 
         <label for="image">Upload Image</label>
         <div class="form-group">
@@ -173,6 +183,41 @@
 
     // Attach validation to the form submission
     document.querySelector('form').addEventListener('submit', validateImageSize);
+
+    //Logic for days and night: --
+    function calculateDuration() {
+            let days = parseInt(document.getElementById('duration').value);
+            let resultElement = document.getElementById('total_duration');
+
+            if (!isNaN(days) && days > 0) {
+                let nights = days + 1; 
+                resultElement.innerText = ` ${days} Days ${nights} Nights`;
+            } else {
+                resultElement.innerText = "";
+            }
+        }
+        //Checkword counts on About Package:
+        function checkWordLimit() {
+            let inputField = document.getElementById("about");
+            let wordCountDisplay = document.getElementById("word_count");
+            let errorMessage = document.getElementById("error_message");
+
+            // Get input text and split it into words
+            let words = inputField.value.trim().split(/\s+/);
+            let wordCount = words.length;
+
+            // Update word count display
+            wordCountDisplay.innerText = wordCount;
+
+            // Check if word limit exceeded
+            if (wordCount > 500) {
+                errorMessage.innerText = "500 words exceeded!";
+                inputField.value = words.slice(0, 500).join(" "); // Trim extra words
+                wordCountDisplay.innerText = 500; // Lock word count at 500
+            } else {
+                errorMessage.innerText = ""; // Clear error if within limit
+            }
+        }
 </script>
 
 </body>

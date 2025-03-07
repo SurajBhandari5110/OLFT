@@ -42,17 +42,26 @@
             </div>
 
             <div class="form-group">
-                <label for="about">About</label>
-                <textarea name="about" class="form-control" rows="5" required>{{ $package->about }}</textarea>
-            </div>
+    <label for="about">About</label>
+    <textarea name="about" id="about" class="form-control" rows="5" required oninput="checkWordLimit()">{{ $package->about }}</textarea>
+    <br>
+
+    <!-- Word Count Display -->
+    <p><strong>Word Count:</strong> <span id="word_count">0</span>/500</p>
+
+    <!-- Error Message -->
+    <p style="color:red;" id="error_message" class="error-message"></p>
+</div>
 
             <div class="form-group">
             <label for="country">Country</label>
-    <select name="country" id="country" class="form-control" required>
-    <option value="" >{{ $package->country }}</option>
-    @foreach($countries as $country)
-        <option value="{{ $country->name }}">{{ $country->name }}</option>
-    @endforeach
+            <select name="country" id="country" class="form-control" required>
+        <option value="{{ $package->country }}" selected>{{ $package->country }} (Currently Selected)</option>
+        @foreach($countries as $country)
+            @if($country->name !== $package->country)
+                <option value="{{ $country->name }}">{{ $country->name }}</option>
+            @endif
+        @endforeach
     </select>
             </div>
 
@@ -84,12 +93,12 @@
             </div>
 
             <div class="form-group">
-                <label for="tour_guide">Number of Tour Guides</label>
+                <label for="tour_guide">Captains</label>
                 <input type="text" name="tour_guide" class="form-control" value="{{ $package->tour_guide }}" required>
             </div>
 
             <div class="form-group">
-                <label for="coordinates">Coordinates</label>
+                <label for="coordinates">Location</label>
                 <input type="text" name="coordinates" class="form-control" value="{{ $package->coordinates }}">
             </div>
 
@@ -226,6 +235,30 @@
 
     // Attach validation to the form submission
     document.querySelector('form').addEventListener('submit', validateImageSize);
+    //word-counts in about package:
+    function checkWordLimit() {
+        let textarea = document.getElementById("about");
+        let wordCountDisplay = document.getElementById("word_count");
+        let errorMessage = document.getElementById("error_message");
+
+        let words = textarea.value.trim().split(/\s+/);
+        let wordCount = words.length;
+
+        // Update the displayed word count
+        wordCountDisplay.innerText = wordCount;
+
+        if (wordCount > 500) {
+            errorMessage.innerText = "500 words exceeded!";
+            textarea.value = words.slice(0, 500).join(" "); // Trim extra words
+        } else {
+            errorMessage.innerText = "";
+        }
+    }
+
+    // Initialize word count on page load
+    document.addEventListener("DOMContentLoaded", function () {
+        checkWordLimit();
+    });
 </script>
 </body>
 </html>

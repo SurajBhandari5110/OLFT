@@ -38,14 +38,25 @@
         </div>
         <div class="form-group">
             <label for="about">About</label>
-            <textarea name="about" id="about" class="form-control"></textarea>
+            
+            <textarea name="about" id="about" placeholder="Write about place under 500 words" class="form-control" rows="6" required oninput="checkWordLimit()"></textarea><br>
+     <!-- Word Count Display -->
+     <p><strong>Word Count:</strong> <span id="word_count">0</span>/500</p>
+
+<!-- Error Message -->
+<p style="color:red;" id="error_message" class="error-message"></p>
         </div>
         <div class="form-group">
             <label for="attraction">Attraction</label>
-            <textarea name="attraction" id="attraction" class="form-control"></textarea>
+            <textarea name="attraction" id="attraction" class="form-control" placeholder="Which Place Attract Tourist To This Country" oninput="checkWordLimit1()"></textarea>
+             <!-- Word Count Display -->
+     <p><strong>Word Count:</strong> <span id="word_count1">0</span>/500</p>
+
+<!-- Error Message -->
+<p style="color:red;" id="error_message1" class="error-message"></p>
         </div>
         <div class="form-group">
-            <label for="coordinates">Coordinates</label>
+            <label for="coordinates">Location</label>
             <input type="text" name="coordinates" id="coordinates" class="form-control">
         </div>
         <button type="submit" class="btn btn-success">Save</button>
@@ -141,6 +152,52 @@
 
     // Attach validation to the form submission
     document.querySelector('form').addEventListener('submit', validateImageSize);
+    
+    //Checkword counts on About Package:
+    function checkWordLimit() {
+            let inputField = document.getElementById("about");
+            let wordCountDisplay = document.getElementById("word_count");
+            let errorMessage = document.getElementById("error_message");
+
+            // Get input text and split it into words
+            let words = inputField.value.trim().split(/\s+/);
+            let wordCount = words.length;
+
+            // Update word count display
+            wordCountDisplay.innerText = wordCount;
+
+            // Check if word limit exceeded
+            if (wordCount > 500) {
+                errorMessage.innerText = "500 words exceeded!";
+                inputField.value = words.slice(0, 500).join(" "); // Trim extra words
+                wordCountDisplay.innerText = 500; // Lock word count at 500
+            } else {
+                errorMessage.innerText = ""; // Clear error if within limit
+            }
+        }
+        //Checkword count for Attraction:
+        //Checkword counts on About Package:
+    function checkWordLimit1() {
+            let inputField = document.getElementById("attraction");
+            let wordCountDisplay = document.getElementById("word_count1");
+            let errorMessage = document.getElementById("error_message1");
+
+            // Get input text and split it into words
+            let words = inputField.value.trim().split(/\s+/);
+            let wordCount = words.length;
+
+            // Update word count display
+            wordCountDisplay.innerText = wordCount;
+
+            // Check if word limit exceeded
+            if (wordCount > 500) {
+                errorMessage.innerText = "500 words exceeded!";
+                inputField.value = words.slice(0, 500).join(" "); // Trim extra words
+                wordCountDisplay.innerText = 500; // Lock word count at 500
+            } else {
+                errorMessage.innerText = ""; // Clear error if within limit
+            }
+        }
 </script>
 </body>
 </html>
